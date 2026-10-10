@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MIRROR AI — BYTE</title>
+<style>
+:root{--bg:#04060f;--bg2:#0b1230;--tx:#e8f0ff;--mu:#8a9bc4;--a:#22e6ff;--v:#8b5cf6;--ln:#1c2a55;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(900px 600px at 30% 0,var(--bg2),var(--bg));color:var(--tx);font:15px/1.5 "Segoe UI",system-ui,sans-serif;min-height:100vh}
+header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--ln)}
+h1{font-size:20px;margin:0;letter-spacing:.14em;font-weight:600}h1 small{display:block;font-size:12px;color:var(--mu);letter-spacing:0;font-weight:400}
+select,button,input,textarea{font:inherit;color:var(--tx);background:#0d1736;border:1px solid var(--ln);border-radius:8px;padding:8px 12px}
+button{cursor:pointer}button:hover:not(:disabled){border-color:var(--a)}button:disabled{opacity:.4;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--a);outline-offset:2px}
+main{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1fr);gap:18px;padding:18px;max-width:1100px;margin:auto}
+@media(max-width:800px){main{grid-template-columns:1fr}}
+.stage{background:linear-gradient(#070d24,#050816);border:1px solid var(--ln);border-radius:18px;padding:12px;text-align:center}
+#status{display:inline-block;margin:6px 0 2px;padding:4px 14px;border:1px solid var(--a);border-radius:99px;color:var(--a)}
+svg#bot{width:100%;max-width:340px;height:auto}
+.eye{fill:var(--a);transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}
+.glow{filter:drop-shadow(0 0 8px var(--a))}
+#bot .wave,#bot .gear,#bot .zz,#bot .warn{opacity:0}
+#bot{--sp:1}
+#bot .head{animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-5px)}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@keyframes pulse{50%{opacity:.35}}@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes talk{50%{transform:scaleY(2.4)}}@keyframes hop{50%{transform:translateY(-14px)}}
+[data-s=listening] .wave{opacity:1}[data-s=listening] .wave rect{animation:talk .5s infinite;transform-box:fill-box;transform-origin:center}
+[data-s=thinking] .gear,[data-s=working] .gear,[data-s=coding] .gear,[data-s=debugging] .gear{opacity:1;animation:spin 2s linear infinite;transform-box:fill-box;transform-origin:center}
+[data-s=thinking] .eye{animation:pulse .8s infinite}
+[data-s=speaking] .mouth{animation:talk .3s infinite;transform-box:fill-box;transform-origin:center}
+[data-s=happy] .eye,[data-s=celebrating] .eye{filter:drop-shadow(0 0 14px #fff)}
+[data-s=celebrating] .head{animation:hop .5s infinite}
+[data-s=curious] .head{transform:rotate(-6deg);transform-origin:170px 150px;animation:none}
+[data-s=coding] .eye{fill:var(--v)}[data-s=debugging] .eye{fill:#ffb020}
+[data-s=tired] .eye{transform:scaleY(.45);animation:none}[data-s=tired] .head{animation-duration:9s}
+[data-s=sleeping] .eye{transform:scaleY(.08);animation:none}[data-s=sleeping] .zz{opacity:1;animation:pulse 2s infinite}
+[data-s=error] .eye{fill:#ff4d6d}[data-s=error] .warn{opacity:1;animation:pulse .6s infinite}
+.panel{background:#070d24;border:1px solid var(--ln);border-radius:18px;padding:14px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}nav button[aria-selected=true]{background:var(--a);color:#001018;border-color:var(--a)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 14px;margin-bottom:12px}
+.st label{display:flex;justify-content:space-between;color:var(--mu);font-size:13px}
+.bar{height:6px;background:#12204a;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--v),var(--a));transition:width .4s}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+#toast{min-height:22px;color:var(--a);margin:8px 0}
+#log{height:240px;overflow:auto;border:1px solid var(--ln);border-radius:10px;padding:8px;margin-bottom:8px}
+.m{margin:6px 0;padding:6px 10px;border-radius:10px;max-width:90%}.m.u{background:#13235a;margin-left:auto}.m.b{background:#0f1a3d}
+.row{display:flex;gap:6px}.row input{flex:1;min-width:0}
+canvas{width:100%;max-width:320px;background:#050816;border:1px solid var(--ln);border-radius:12px;touch-action:none;display:block;margin:8px auto}
+.empty{color:var(--mu);text-align:center;padding:16px}
+textarea{width:100%;height:140px;font-size:12px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header><h1>MIRROR AI<small id="sub"></small></h1>
+<label><span id="langl"></span> <select id="lang"><option value="tg">Тоҷикӣ</option><option value="ru">Русский</option><option value="en">English</option></select></label></header>
+<main>
+<section class="stage"><div id="status"></div>
+<svg id="bot" viewBox="0 0 340 330" data-s="idle" role="img" aria-label="BYTE">
+<defs><linearGradient id="mt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4a7a"/><stop offset=".5" stop-color="#1a2547"/><stop offset="1" stop-color="#0c1330"/></linearGradient></defs>
+<ellipse cx="170" cy="312" rx="90" ry="9" fill="#22e6ff22"/>
+<rect x="120" y="215" width="100" height="80" rx="18" fill="url(#mt)" stroke="#2c3d78"/>
+<circle cx="170" cy="255" r="12" fill="none" stroke="var(--a)" class="glow"/>
+<g class="head"><line x1="170" y1="40" x2="170" y2="70" stroke="#4a5b94" stroke-width="4"/><circle id="ant" cx="170" cy="36" r="7" fill="var(--v)" class="glow"/>
+<rect x="85" y="70" width="170" height="140" rx="34" fill="url(#mt)" stroke="#3a4f94" stroke-width="2"/>
+<rect x="100" y="88" width="140" height="82" rx="22" fill="#02040c" stroke="#1c2a55"/>
+<ellipse class="eye glow" cx="140" cy="128" rx="17" ry="20"/><ellipse class="eye glow" cx="200" cy="128" rx="17" ry="20"/>
+<rect class="mouth" x="152" y="186" width="36" height="6" rx="3" fill="var(--a)"/>
+<rect x="68" y="120" width="12" height="40" rx="5" fill="#2c3d78"/><rect x="260" y="120" width="12" height="40" rx="5" fill="#2c3d78"/></g>
+<g class="gear glow"><circle cx="290" cy="60" r="16" fill="none" stroke="var(--v)" stroke-width="5" stroke-dasharray="7 5"/></g>
+<g class="wave" fill="var(--a)"><rect x="40" y="130" width="6" height="14"/><rect x="52" y="124" width="6" height="26"/><rect x="288" y="130" width="6" height="14"/><rect x="298" y="124" width="6" height="26"/></g>
+<text class="zz" x="250" y="70" fill="#8a9bc4" font-size="24">z z</text>
+<text class="warn" x="150" y="30" fill="#ff4d6d" font-size="26">⚠</text></svg>
+<div id="toast" role="status" aria-live="polite"></div></section>
+<section class="panel">
+<div class="stats" id="stats"></div>
+<nav role="tablist" id="tabs"></nav><div id="view"></div></section>
+</main>
+<script>
+const T={
+en:{sub:"Digital robot companion",lang:"Language",robot:"Robot",chat:"Chat",game:"Game",shop:"Shop",data:"Data",energy:"Energy",mood:"Mood",xp:"Intelligence XP",quality:"Code Quality",focus:"Focus",battery:"Battery",coins:"Coins",
+a_code:"Write Code",a_bug:"Fix Bugs",a_learn:"Learn Something",a_coffee:"Give Coffee",a_food:"Give Food",a_charge:"Recharge Battery",a_rest:"Rest",a_sleep:"Sleep",a_wake:"Wake Up",
+st_idle:"Idle",st_listening:"Listening",st_thinking:"Thinking",st_speaking:"Speaking",st_happy:"Happy",st_curious:"Curious",st_working:"Working",st_coding:"Coding",st_debugging:"Debugging",st_tired:"Tired",st_sleeping:"Sleeping",st_error:"Error",st_celebrating:"Celebrating",
+low:"Not enough energy, battery or focus.",noitem:"You don't have that item. Buy it in the Shop.",asleep:"BYTE is sleeping. Wake it up first.",done:"Done.",
+send:"Send",ph:"Message BYTE…",nobackend:"No AI backend is connected. This page runs without a server, so it cannot hold an API key or call a model. Run the Node server from the project spec to enable real AI answers.",offline:"Offline (local, not an AI model): ",stat_reply:"Energy {e}, battery {b}, coins {c}.",hint:"Local replies only. Type “status” for BYTE's stats.",
+mic:"Start listening",stop:"Stop",nomic:"Speech recognition isn't supported or the microphone was denied.",speak:"Read replies aloud",
+start:"Start",pause:"Pause",resume:"Resume",restart:"Restart",score:"Score",lives:"Lives",best:"Best",win:"You win! +{n} coins",lose:"Game over. +{n} coins",gdesc:"Catch cyan cells, dodge red bolts. Reach 20 to win. Move with your finger, mouse or arrows.",
+buy:"Buy",owned:"Owned",use:"Use",cell:"Energy cell",coffee:"Coffee",food:"Food",theme:"Violet theme",acc:"Glow antenna",bought:"Purchased.",
+export:"Export data",clear:"Clear all data",confirm:"Delete all saved data? This cannot be undone.",cleared:"Data cleared.",dnote:"Everything is saved only in this browser. No API keys are stored."},
+ru:{sub:"Цифровой робот-компаньон",lang:"Язык",robot:"Робот",chat:"Чат",game:"Игра",shop:"Магазин",data:"Данные",energy:"Энергия",mood:"Настроение",xp:"Опыт интеллекта",quality:"Качество кода",focus:"Фокус",battery:"Батарея",coins:"Монеты",
+a_code:"Писать код",a_bug:"Исправлять баги",a_learn:"Учиться",a_coffee:"Дать кофе",a_food:"Дать еду",a_charge:"Зарядить батарею",a_rest:"Отдых",a_sleep:"Спать",a_wake:"Разбудить",
+st_idle:"Ожидание",st_listening:"Слушает",st_thinking:"Думает",st_speaking:"Говорит",st_happy:"Радуется",st_curious:"Любопытно",st_working:"Работает",st_coding:"Пишет код",st_debugging:"Отлаживает",st_tired:"Устал",st_sleeping:"Спит",st_error:"Ошибка",st_celebrating:"Празднует",
+low:"Не хватает энергии, батареи или фокуса.",noitem:"Нет такого предмета. Купите его в магазине.",asleep:"BYTE спит. Сначала разбудите его.",done:"Готово.",
+send:"Отправить",ph:"Напишите BYTE…",nobackend:"AI-сервер не подключён. Эта страница работает без сервера, поэтому не может хранить API-ключ и вызывать модель. Запустите Node-сервер из задания, чтобы получать настоящие ответы ИИ.",offline:"Офлайн (локально, не ИИ-модель): ",stat_reply:"Энергия {e}, батарея {b}, монеты {c}.",hint:"Только локальные ответы. Напишите «status», чтобы увидеть статистику.",
+mic:"Начать слушать",stop:"Стоп",nomic:"Распознавание речи не поддерживается или микрофон запрещён.",speak:"Озвучивать ответы",
+start:"Старт",pause:"Пауза",resume:"Продолжить",restart:"Заново",score:"Счёт",lives:"Жизни",best:"Рекорд",win:"Победа! +{n} монет",lose:"Игра окончена. +{n} монет",gdesc:"Ловите голубые ячейки, избегайте красных болтов. 20 очков — победа. Управление: палец, мышь или стрелки.",
+buy:"Купить",owned:"Куплено",use:"Выбрать",cell:"Энергоячейка",coffee:"Кофе",food:"Еда",theme:"Фиолетовая тема",acc:"Светящаяся антенна",bought:"Куплено.",
+export:"Экспорт данных",clear:"Удалить все данные",confirm:"Удалить все сохранённые данные? Это нельзя отменить.",cleared:"Данные удалены.",dnote:"Всё хранится только в этом браузере. API-ключи не сохраняются."},
+tg:{sub:"Ҳамроҳи рақамии робот",lang:"Забон",robot:"Робот",chat:"Чат",game:"Бозӣ",shop:"Мағоза",data:"Маълумот",energy:"Энергия",mood:"Кайфият",xp:"Таҷрибаи ақл",quality:"Сифати код",focus:"Тамаркуз",battery:"Батарея",coins:"Тангаҳо",
+a_code:"Навиштани код",a_bug:"Ислоҳи хатогиҳо",a_learn:"Омӯхтан",a_coffee:"Қаҳва додан",a_food:"Хӯрок додан",a_charge:"Пур кардани батарея",a_rest:"Истироҳат",a_sleep:"Хоб",a_wake:"Бедор кардан",
+st_idle:"Интизорӣ",st_listening:"Гӯш мекунад",st_thinking:"Фикр мекунад",st_speaking:"Гап мезанад",st_happy:"Шод",st_curious:"Кунҷков",st_working:"Кор мекунад",st_coding:"Код менависад",st_debugging:"Хатогиро ислоҳ мекунад",st_tired:"Хаста",st_sleeping:"Хоб аст",st_error:"Хатогӣ",st_celebrating:"Ҷашн мегирад",
+low:"Энергия, батарея ё тамаркуз намерасад.",noitem:"Ин ашё нест. Онро дар мағоза харед.",asleep:"BYTE хоб аст. Аввал бедор кунед.",done:"Анҷом шуд.",
+send:"Фиристодан",ph:"Ба BYTE нависед…",nobackend:"Сервери AI пайваст нашудааст. Ин саҳифа бе сервер кор мекунад, барои ҳамин калиди API-ро нигоҳ дошта ва модели AI-ро даъват карда наметавонад. Барои посухҳои воқеии AI сервери Node-ро ба кор андозед.",offline:"Оффлайн (маҳаллӣ, модели AI нест): ",stat_reply:"Энергия {e}, батарея {b}, тангаҳо {c}.",hint:"Танҳо посухҳои маҳаллӣ. «status» нависед.",
+mic:"Гӯш кардан оғоз",stop:"Қатъ",nomic:"Шиносоии овоз дастгирӣ намешавад ё микрофон манъ шудааст.",speak:"Посухҳоро бо овоз хондан",
+start:"Оғоз",pause:"Таваққуф",resume:"Идома",restart:"Аз нав",score:"Хол",lives:"Ҷонҳо",best:"Беҳтарин",win:"Ғалаба! +{n} танга",lose:"Бозӣ тамом шуд. +{n} танга",gdesc:"Ячейкаҳои кабудро бигиред, болтҳои сурхро пешгирӣ кунед. 20 хол — ғалаба. Идоракунӣ: ангушт, муш ё тирҳо.",
+buy:"Харидан",owned:"Харида шуд",use:"Интихоб",cell:"Ячейкаи энергия",coffee:"Қаҳва",food:"Хӯрок",theme:"Мавзӯи бунафш",acc:"Антенноси дурахшон",bought:"Харида шуд.",
+export:"Содироти маълумот",clear:"Тоза кардани ҳама маълумот",confirm:"Ҳама маълумоти захирашуда нест шавад? Бозгашт нест.",cleared:"Маълумот тоза шуд.",dnote:"Ҳама танҳо дар ин браузер нигоҳ дошта мешавад. Калидҳои API захира намешаванд."}};
+const CFG={tick:5000,drain:.4,sleepGain:2,bat:.25,max:100},KEY="mirrorai.v1";
+const D={lang:"en",energy:80,mood:70,xp:0,quality:20,focus:70,battery:90,coins:20,sleeping:false,inv:{cell:1,coffee:0,food:0},themes:["cyan"],theme:"cyan",acc:false,best:0,chat:[],speak:false};
+let S;try{S=Object.assign({},D,JSON.parse(localStorage.getItem(KEY)||"{}"));S.inv=Object.assign({},D.inv,S.inv)}catch(e){S={...D}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id),t=k=>(T[S.lang]||T.en)[k]||T.en[k]||k;
+const cl=v=>Math.max(0,Math.min(CFG.max,Math.round(v*10)/10));
+let tab="robot",tm=null,tick=null;
+function base(){return S.sleeping?"sleeping":S.energy<20?"tired":"idle"}
+function setState(st,ms){clearTimeout(tm);$("bot").dataset.s=st;$("status").textContent=t("st_"+st);if(ms)tm=setTimeout(()=>setState(base()),ms)}
+function toast(m){$("toast").textContent=m}
+const ACT={code:{c:{energy:-12,battery:-6,focus:-10},g:{xp:8,quality:5,coins:6},st:"coding",need:1},bug:{c:{energy:-10,battery:-5,focus:-12},g:{xp:6,quality:10,coins:5},st:"debugging",need:1},
+learn:{c:{energy:-8,battery:-3,focus:-8},g:{xp:14,mood:3},st:"curious",need:1},coffee:{item:"coffee",g:{energy:20,focus:25},st:"happy"},food:{item:"food",g:{energy:12,mood:15},st:"happy"},
+charge:{item:"cell",g:{battery:40},st:"happy"},rest:{g:{energy:15,focus:5,mood:2},st:"idle"}};
+function act(k){
+ if(k==="wake"){S.sleeping=false;setState("curious",1500);toast(t("done"));return render()}
+ if(k==="sleep"){S.sleeping=true;setState("sleeping");toast(t("done"));save();return render()}
+ if(S.sleeping)return toast(t("asleep"));
+ const a=ACT[k];
+ if(a.item&&S.inv[a.item]<1)return err(t("noitem"));
+ if(a.c)for(const s in a.c)if(S[s]+a.c[s]<0)return err(t("low"));
+ if(a.item)S.inv[a.item]--;
+ for(const o of [a.c||{},a.g])for(const s in o){S[s]=s==="xp"||s==="coins"?Math.max(0,S[s]+o[s]):cl(S[s]+o[s])}
+ setState(a.st,2500);toast(t("a_"+k)+" ✓");save();render()}
+function err(m){setState("error",1600);toast(m)}
+function stats(){const L=["energy","mood","xp","quality","focus","battery","coins"];
+ $("stats").innerHTML=L.map(s=>`<div class="st"><label><span>${t(s)}</span><b>${s==="coins"||s==="xp"?S[s]:Math.round(S[s])}</b></label><div class="bar"><i style="width:${s==="coins"?Math.min(100,S[s]):s==="xp"?S[s]%100:S[s]}%"></i></div></div>`).join("")}
+function tabs(){const L=["robot","chat","game","shop","data"];
+ $("tabs").innerHTML=L.map(x=>`<button role="tab" aria-selected="${x===tab}" data-t="${x}">${t(x)}</button>`).join("");
+ $("tabs").onclick=e=>{const b=e.target.closest("[data-t]");if(b){if(tab==="game")gpause(true);tab=b.dataset.t;render()}}}
+function theme(){const r=document.documentElement.style;r.setProperty("--a",S.theme==="violet"?"#b388ff":"#22e6ff");r.setProperty("--v",S.theme==="violet"?"#ff6ec7":"#8b5cf6");$("ant").setAttribute("r",S.acc?11:7)}
+function render(){document.documentElement.lang=S.lang;$("sub").textContent=t("sub");$("langl").textContent=t("lang");$("lang").value=S.lang;theme();stats();tabs();$("status").textContent=t("st_"+$("bot").dataset.s);
+ const v=$("view");
+ if(tab==="robot"){v.innerHTML='<div class="grid">'+["code","bug","learn","coffee","food","charge","rest",S.sleeping?"wake":"sleep"].map(k=>`<button data-a="${k}">${t("a_"+k)}${ACT[k]&&ACT[k].item?" ("+S.inv[ACT[k].item]+")":""}</button>`).join("")+"</div>";v.onclick=e=>{const b=e.target.closest("[data-a]");if(b)act(b.dataset.a)}}
+ else if(tab==="chat")chatUI(v);else if(tab==="game")gameUI(v);else if(tab==="shop")shopUI(v);else dataUI(v)}
+/* chat */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
+function chatUI(v){v.onclick=null;
+ v.innerHTML=`<div id="log"></div><div class="row"><input id="inp" placeholder="${t("ph")}" maxlength="500"><button id="snd">${t("send")}</button><button id="mic">🎤</button></div><p class="empty">${t("hint")}</p><label><input type="checkbox" id="sp" ${S.speak?"checked":""}> ${t("speak")}</label>`;
+ const lg=$("log");S.chat.forEach(m=>addMsg(m.r,m.x,false));
+ const go=()=>{const x=$("inp").value.trim();if(!x)return;$("inp").value="";S.chat.push({r:"u",x});addMsg("u",x);setState("thinking");
+  setTimeout(()=>{const r=/^status$/i.test(x)?t("offline")+t("stat_reply").replace("{e}",Math.round(S.energy)).replace("{b}",Math.round(S.battery)).replace("{c}",S.coins):t("nobackend");
+   S.chat.push({r:"b",x:r});S.chat=S.chat.slice(-50);addMsg("b",r);save();setState(S.speak?"speaking":"idle",2500);
+   if(S.speak&&window.speechSynthesis){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(r);u.lang={tg:"tg-TJ",ru:"ru-RU",en:"en-US"}[S.lang];speechSynthesis.speak(u)}},300)};
+ $("snd").onclick=go;$("inp").onkeydown=e=>{if(e.key==="Enter")go()};$("sp").onchange=e=>{S.speak=e.target.checked;if(!S.speak&&window.speechSynthesis)speechSynthesis.cancel();save()};
+ $("mic").onclick=()=>{if(rec){rec.stop();return}if(!SR)return err(t("nomic"));
+  rec=new SR();rec.lang={tg:"tg-TJ",ru:"ru-RU",en:"en-US"}[S.lang];rec.interimResults=true;
+  rec.onstart=()=>{setState("listening");$("mic").textContent="⏹"};
+  rec.onresult=e=>{$("inp").value=[...e.results].map(r=>r[0].transcript).join("")};
+  rec.onerror=()=>err(t("nomic"));rec.onend=()=>{rec=null;if($("mic"))$("mic").textContent="🎤";if($("bot").dataset.s==="listening")setState(base())};
+  try{rec.start()}catch(e){rec=null;err(t("nomic"))}}}
+function addMsg(r,x,sc=true){const d=document.createElement("div");d.className="m "+r;d.textContent=x;$("log").appendChild(d);$("log").scrollTop=1e9}
+/* game */
+const G={on:false,p:false,x:160,it:[],sc:0,li:3,t:0,sp:0,raf:0,end:"",keys:{}};
+function gameUI(v){v.onclick=null;
+ v.innerHTML=`<p>${t("gdesc")}</p><div class="row"><b id="gs"></b></div><canvas id="cv" width="320" height="420"></canvas><div class="row"><button id="gl">◀</button><button id="gst"></button><button id="gr">▶</button></div><p id="gm" class="empty">${G.end}</p>`;
+ const cv=$("cv");cv.onpointermove=e=>{const r=cv.getBoundingClientRect();G.x=(e.clientX-r.left)*320/r.width};
+ const hold=(id,d)=>{const b=$(id);b.onpointerdown=()=>G.keys[d]=1;b.onpointerup=b.onpointerleave=()=>G.keys[d]=0};hold("gl","l");hold("gr","r");
+ $("gst").onclick=()=>{if(!G.on)gstart();else gpause()};gtxt();draw()}
+function gtxt(){if(!$("gst"))return;$("gst").textContent=!G.on?(G.end?t("restart"):t("start")):G.p?t("resume"):t("pause");$("gs").textContent=`${t("score")}: ${G.sc} · ${t("lives")}: ${G.li} · ${t("best")}: ${S.best}`}
+function gstart(){Object.assign(G,{on:true,p:false,it:[],sc:0,li:3,t:0,sp:0,end:""});$("gm").textContent="";loop();gtxt()}
+function gpause(force){if(!G.on)return;if(force)G.p=true;else G.p=!G.p;if(!G.p)loop();else cancelAnimationFrame(G.raf);gtxt()}
+function gend(win){G.on=false;cancelAnimationFrame(G.raf);const n=win?G.sc+10:Math.floor(G.sc/2);S.coins+=n;S.mood=cl(S.mood+(win?10:-2));if(G.sc>S.best)S.best=G.sc;
+ G.end=t(win?"win":"lose").replace("{n}",n);save();setState(win?"celebrating":"idle",3000);stats();if($("gm")){$("gm").textContent=G.end;gtxt();draw()}}
+function loop(){if(!G.on||G.p||tab!=="game")return;G.raf=requestAnimationFrame(loop);
+ if(G.keys.l)G.x-=5;if(G.keys.r)G.x+=5;G.x=Math.max(30,Math.min(290,G.x));
+ const spd=2+G.sc*.12,gap=Math.max(25,45-G.sc);if(++G.t%gap===0)G.it.push({x:20+Math.random()*280,y:-10,bad:Math.random()<.3});
+ for(const o of G.it){o.y+=spd;if(o.y>380&&o.y<405&&Math.abs(o.x-G.x)<34){o.d=1;if(o.bad)G.li--;else G.sc++}else if(o.y>430)o.d=1}
+ G.it=G.it.filter(o=>!o.d);gtxt();draw();if(G.li<=0)gend(false);else if(G.sc>=20)gend(true)}
+function draw(){const c=$("cv");if(!c)return;const x=c.getContext("2d");x.clearRect(0,0,320,420);
+ const a=getComputedStyle(document.documentElement).getPropertyValue("--a");
+ for(const o of G.it){x.fillStyle=o.bad?"#ff4d6d":a;x.beginPath();x.arc(o.x,o.y,9,0,7);x.fill()}
+ x.fillStyle="#8b9bd0";x.fillRect(G.x-32,392,64,10)}
+document.addEventListener("keydown",e=>{if(tab!=="game")return;if(e.key==="ArrowLeft")G.keys.l=1;if(e.key==="ArrowRight")G.keys.r=1});
+document.addEventListener("keyup",e=>{if(e.key==="ArrowLeft")G.keys.l=0;if(e.key==="ArrowRight")G.keys.r=0});
+/* shop */
+const SHOP=[{id:"cell",n:"cell",p:10,k:"inv"},{id:"coffee",n:"coffee",p:5,k:"inv"},{id:"food",n:"food",p:8,k:"inv"},{id:"violet",n:"theme",p:30,k:"theme"},{id:"acc",n:"acc",p:25,k:"acc"}];
+function shopUI(v){v.innerHTML=`<p><b>${t("coins")}: ${S.coins}</b></p><div class="grid">`+SHOP.map(i=>{
+ const own=i.k==="theme"?S.themes.includes("violet"):i.k==="acc"?S.acc:false;
+ return `<div><div>${t(i.n)}${i.k==="inv"?" ("+S.inv[i.id]+")":""}</div><button data-b="${i.id}" ${own?"disabled":""}>${own?t("owned"):t("buy")+" · "+i.p}</button>${own&&i.k==="theme"?`<button data-u="${S.theme==="violet"?"cyan":"violet"}">${t("use")}</button>`:""}</div>`}).join("")+"</div>";
+ v.onclick=e=>{const b=e.target.closest("[data-b]"),u=e.target.closest("[data-u]");
+  if(u){S.theme=u.dataset.u;save();return render()}
+  if(!b)return;const i=SHOP.find(x=>x.id===b.dataset.b);if(S.coins<i.p)return err(t("low"));
+  S.coins-=i.p;if(i.k==="inv")S.inv[i.id]++;else if(i.k==="theme"){S.themes.push("violet");S.theme="violet"}else S.acc=true;
+  save();toast(t("bought"));render()}}
+/* data */
+function dataUI(v){v.onclick=null;v.innerHTML=`<p class="empty">${t("dnote")}</p><div class="row"><button id="ex">${t("export")}</button><button id="cr">${t("clear")}</button></div><textarea id="tx" readonly hidden></textarea>`;
+ $("ex").onclick=()=>{const x=$("tx");x.hidden=false;x.value=JSON.stringify(S,null,2);x.select()};
+ $("cr").onclick=()=>{if(confirm(t("confirm"))){const l=S.lang;try{localStorage.removeItem(KEY)}catch(e){}S={...D,inv:{...D.inv},themes:["cyan"],chat:[],lang:l};toast(t("cleared"));render()}}}
+/* life loop: exactly one timer */
+function life(){if(tick)clearInterval(tick);tick=setInterval(()=>{
+ if(S.sleeping){S.energy=cl(S.energy+CFG.sleepGain);if(S.energy>=100){S.sleeping=false;setState("happy",2000)}}
+ else{S.energy=cl(S.energy-CFG.drain);S.battery=cl(S.battery-CFG.bat);S.focus=cl(S.focus-.2);if(S.energy<20)S.mood=cl(S.mood-.5)}
+ if(S.battery<=0&&!S.sleeping){S.sleeping=true;setState("sleeping")}
+ if(!tm&&!["listening","speaking","thinking"].includes($("bot").dataset.s))setState(base());
+ save();stats()},CFG.tick)}
+$("lang").onchange=e=>{S.lang=e.target.value;save();render()};
+setState(base());render();life();
+</script></body></html>
