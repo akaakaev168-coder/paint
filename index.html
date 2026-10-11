@@ -3,78 +3,114 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MIRROR AI — BYTE</title>
 <style>
-:root{--bg:#04060f;--bg2:#0b1230;--tx:#e8f0ff;--mu:#8a9bc4;--a:#22e6ff;--v:#8b5cf6;--ln:#1c2a55;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#04060c;--ink:#e6edf7;--mu:#7f8aa6;--a:#4de1ff;--v:#8b7bff;--ln:rgba(140,190,255,.18);--gl:rgba(12,18,34,.72);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:radial-gradient(900px 600px at 30% 0,var(--bg2),var(--bg));color:var(--tx);font:15px/1.5 "Segoe UI",system-ui,sans-serif;min-height:100vh}
-header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--ln)}
-h1{font-size:20px;margin:0;letter-spacing:.14em;font-weight:600}h1 small{display:block;font-size:12px;color:var(--mu);letter-spacing:0;font-weight:400}
-select,button,input,textarea{font:inherit;color:var(--tx);background:#0d1736;border:1px solid var(--ln);border-radius:8px;padding:8px 12px}
-button{cursor:pointer}button:hover:not(:disabled){border-color:var(--a)}button:disabled{opacity:.4;cursor:not-allowed}
+body{margin:0;color:var(--ink);font:14.5px/1.5 "Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;min-height:100vh;background:radial-gradient(1000px 600px at 20% -10%,#0f2144,transparent 60%),radial-gradient(800px 500px at 100% 100%,#1a1040,transparent 55%),var(--bg);background-attachment:fixed}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 28px;border-bottom:1px solid var(--ln)}
+.brand b{font-size:17px;letter-spacing:.34em;font-weight:300}.brand small{display:block;font-size:12px;color:var(--mu);letter-spacing:.02em}
+.hd{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--mu)}
+select,button,input,textarea{font:inherit;color:var(--ink);background:rgba(255,255,255,.04);border:1px solid var(--ln);border-radius:10px;padding:8px 13px}
+select option{background:#0b1222}
+button{cursor:pointer;transition:border-color .15s,background .15s,transform .08s}
+button:hover:not(:disabled){border-color:var(--a);background:rgba(77,225,255,.09)}button:active:not(:disabled){transform:scale(.97)}
+button:disabled{opacity:.38;cursor:not-allowed}
 :focus-visible{outline:2px solid var(--a);outline-offset:2px}
-main{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1fr);gap:18px;padding:18px;max-width:1100px;margin:auto}
-@media(max-width:800px){main{grid-template-columns:1fr}}
-.stage{background:linear-gradient(#070d24,#050816);border:1px solid var(--ln);border-radius:18px;padding:12px;text-align:center}
-#status{display:inline-block;margin:6px 0 2px;padding:4px 14px;border:1px solid var(--a);border-radius:99px;color:var(--a)}
-svg#bot{width:100%;max-width:340px;height:auto}
-.eye{fill:var(--a);transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}
-.glow{filter:drop-shadow(0 0 8px var(--a))}
-#bot .wave,#bot .gear,#bot .zz,#bot .warn{opacity:0}
-#bot{--sp:1}
-#bot .head{animation:float 4s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-5px)}}
-@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
-@keyframes pulse{50%{opacity:.35}}@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes talk{50%{transform:scaleY(2.4)}}@keyframes hop{50%{transform:translateY(-14px)}}
-[data-s=listening] .wave{opacity:1}[data-s=listening] .wave rect{animation:talk .5s infinite;transform-box:fill-box;transform-origin:center}
-[data-s=thinking] .gear,[data-s=working] .gear,[data-s=coding] .gear,[data-s=debugging] .gear{opacity:1;animation:spin 2s linear infinite;transform-box:fill-box;transform-origin:center}
-[data-s=thinking] .eye{animation:pulse .8s infinite}
-[data-s=speaking] .mouth{animation:talk .3s infinite;transform-box:fill-box;transform-origin:center}
-[data-s=happy] .eye,[data-s=celebrating] .eye{filter:drop-shadow(0 0 14px #fff)}
-[data-s=celebrating] .head{animation:hop .5s infinite}
-[data-s=curious] .head{transform:rotate(-6deg);transform-origin:170px 150px;animation:none}
-[data-s=coding] .eye{fill:var(--v)}[data-s=debugging] .eye{fill:#ffb020}
-[data-s=tired] .eye{transform:scaleY(.45);animation:none}[data-s=tired] .head{animation-duration:9s}
-[data-s=sleeping] .eye{transform:scaleY(.08);animation:none}[data-s=sleeping] .zz{opacity:1;animation:pulse 2s infinite}
-[data-s=error] .eye{fill:#ff4d6d}[data-s=error] .warn{opacity:1;animation:pulse .6s infinite}
-.panel{background:#070d24;border:1px solid var(--ln);border-radius:18px;padding:14px}
-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}nav button[aria-selected=true]{background:var(--a);color:#001018;border-color:var(--a)}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 14px;margin-bottom:12px}
-.st label{display:flex;justify-content:space-between;color:var(--mu);font-size:13px}
-.bar{height:6px;background:#12204a;border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--v),var(--a));transition:width .4s}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
-#toast{min-height:22px;color:var(--a);margin:8px 0}
-#log{height:240px;overflow:auto;border:1px solid var(--ln);border-radius:10px;padding:8px;margin-bottom:8px}
-.m{margin:6px 0;padding:6px 10px;border-radius:10px;max-width:90%}.m.u{background:#13235a;margin-left:auto}.m.b{background:#0f1a3d}
+main{display:grid;grid-template-columns:minmax(300px,1.05fr) minmax(320px,1fr);gap:24px;padding:26px 28px;max-width:1160px;margin:auto;align-items:start}
+@media(max-width:820px){main{grid-template-columns:1fr;padding:16px}}
+.stage{position:relative;overflow:hidden;border:1px solid var(--ln);border-radius:26px;padding:16px 16px 18px;text-align:center;background:radial-gradient(circle at 50% 46%,#10294d 0,#08101f 52%,#05080f 100%)}
+.stage::before{content:"";position:absolute;left:50%;top:50%;width:84%;aspect-ratio:1;transform:translate(-50%,-44%);border-radius:50%;border:1px solid rgba(77,225,255,.22);box-shadow:0 0 70px rgba(77,225,255,.12),inset 0 0 60px rgba(139,123,255,.1)}
+.stage::after{content:"";position:absolute;left:12%;right:12%;bottom:42px;height:46px;background:radial-gradient(ellipse at center,rgba(77,225,255,.28),transparent 70%)}
+.stage>*{position:relative;z-index:1}
+.lv{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--mu)}.lv .bar{flex:1}
+#bubble{min-height:48px;margin:12px auto 0;max-width:340px;padding:9px 16px;background:rgba(8,14,28,.78);backdrop-filter:blur(8px);border:1px solid rgba(77,225,255,.35);border-radius:14px;font-size:14px;text-align:left}
+#bubble::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:#0a1224;border-right:1px solid rgba(77,225,255,.35);border-bottom:1px solid rgba(77,225,255,.35);transform:translateX(-50%) rotate(45deg)}
+svg#bot{width:100%;max-width:340px;height:auto;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;display:block;margin:18px auto 0}
+#status{display:inline-block;margin-top:2px;padding:3px 16px;border:1px solid var(--a);border-radius:99px;color:var(--a);font-size:13px;letter-spacing:.04em}
+#toast{min-height:20px;margin-top:8px;font-size:13px;color:var(--mu)}
+.fx{position:absolute;pointer-events:none;font-size:20px;font-weight:600;z-index:3;color:var(--a);animation:rise 1.4s ease-out forwards}
+@keyframes rise{to{transform:translate(var(--dx),-130px);opacity:0}}
+.panel{background:var(--gl);backdrop-filter:blur(14px);border:1px solid var(--ln);border-radius:26px;padding:20px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 22px;margin-bottom:18px}
+.st label{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin-bottom:4px}.st b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.bar{height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--v),var(--a));border-radius:4px;transition:width .4s}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--ln)}
+nav button{border-color:transparent;color:var(--mu)}nav button[aria-selected=true]{color:var(--a);border-color:var(--a);background:rgba(77,225,255,.1)}
+h3{margin:18px 0 8px;font-size:13px;font-weight:600;color:var(--mu);letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(136px,1fr));gap:8px}
+.card{text-align:left}.opt{display:block;width:100%;margin:8px 0;text-align:left}.ltx{background:rgba(255,255,255,.04);padding:12px 14px;border-radius:12px;border:1px solid var(--ln)}
+#log{height:240px;overflow:auto;border:1px solid var(--ln);border-radius:12px;padding:8px;margin-bottom:8px}
+.m{margin:6px 0;padding:7px 12px;border-radius:12px;max-width:90%}.m.u{background:rgba(77,225,255,.14);margin-left:auto}.m.b{background:rgba(255,255,255,.06)}
 .row{display:flex;gap:6px}.row input{flex:1;min-width:0}
-canvas{width:100%;max-width:320px;background:#050816;border:1px solid var(--ln);border-radius:12px;touch-action:none;display:block;margin:8px auto}
-.empty{color:var(--mu);text-align:center;padding:16px}
+canvas{width:100%;max-width:320px;background:#070b16;border:1px solid var(--ln);border-radius:14px;touch-action:none;display:block;margin:8px auto}
+.empty{color:var(--mu);text-align:center;padding:12px;font-size:13px}
 textarea{width:100%;height:140px;font-size:12px}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+#code{width:100%;height:170px;font:13px/1.4 Consolas,monospace;tab-size:2;white-space:pre;margin:8px 0}
+.hint{border-left:2px solid var(--v);padding:4px 12px;margin:6px 0;font-size:13px;background:rgba(139,123,255,.07)}.hint.ok{border-color:var(--a);background:rgba(77,225,255,.07)}
+.eye{transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}
+#eyes{transition:transform .12s;filter:drop-shadow(0 0 7px var(--a))}
+.rb{transform-box:fill-box;transform-origin:50% 70%}
+#bot .head{animation:float 3.6s ease-in-out infinite}
+#bot .wave,#bot .gear,#bot .zz,#bot .warn,#bot .plate{opacity:0}
+@keyframes float{50%{transform:translateY(-4px)}}@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@keyframes pulse{50%{opacity:.35}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes spinr{to{transform:rotate(360deg)}}
+@keyframes talk{50%{transform:scaleY(2)}}@keyframes hop{50%{transform:translateY(-30px)}}
+@keyframes walk{0%,100%{transform:translateX(-34px)}50%{transform:translateX(34px)}}
+@keyframes eat{to{transform:scale(0)}}@keyframes chew{50%{transform:scaleY(.4)}}
+@keyframes dance{25%{transform:rotate(-9deg) translateY(-8px)}75%{transform:rotate(9deg) translateY(-8px)}}
+@keyframes wave{0%,100%{transform:rotate(-150deg)}50%{transform:rotate(-115deg)}}
+@keyframes hue{to{filter:hue-rotate(360deg)}}@keyframes nod{50%{transform:translateY(7px)}}@keyframes wob{25%{transform:scale(1.04,.96)}75%{transform:scale(.96,1.04)}}
+[data-s=listening] .wave{opacity:1}[data-s=listening] .wave rect{animation:talk .5s infinite;transform-box:fill-box;transform-origin:center}
+[data-s=thinking] .gear,[data-s=coding] .gear,[data-s=debugging] .gear,[data-s=working] .gear{opacity:1;animation:spin 2s linear infinite;transform-box:fill-box;transform-origin:center}
+[data-s=thinking] .eye{animation:pulse .8s infinite}
+[data-s=working] .rb,[data-s=coding] .rb,[data-s=debugging] .rb{animation:walk 3.2s ease-in-out infinite}
+[data-s=happy] .rb{animation:hop .6s 2}[data-s=celebrating] .rb{animation:hop .5s infinite}
+[data-s=happy] #eyes,[data-s=celebrating] #eyes{filter:drop-shadow(0 0 14px #fff)}
+[data-s=curious] .head{transform:rotate(-7deg);transform-origin:180px 205px;animation:none}
+[data-s=coding] .eye{fill:var(--v)}[data-s=debugging] .eye{fill:#ffb84d}
+[data-s=tired] .eye{transform:scaleY(.45);animation:none}[data-s=tired] .head{animation-duration:8s}
+[data-s=sleeping] .eye{transform:scaleY(.1);animation:none}[data-s=sleeping] .zz{opacity:1;animation:pulse 2s infinite}
+[data-s=error] .eye{fill:#ff5d73}[data-s=error] .warn{opacity:1;animation:pulse .6s infinite}
+[data-s=dizzy] .eye{animation:spinr .5s linear infinite}[data-s=dizzy] .head{animation:wob .4s infinite}
+[data-s=eating] .plate{opacity:1}[data-s=eating] .food{transform-box:fill-box;transform-origin:center bottom;animation:eat 2.4s ease-in forwards}
+[data-s=eating] #mouth{animation:chew .35s infinite;transform-box:fill-box;transform-origin:center}
+[data-s=eating] .head{transform:rotate(5deg) translateY(8px);transform-origin:180px 205px;animation:none}
+[data-t=spin] .rb{transform-origin:50% 50%}[data-t=hop] .rb{animation:hop .5s 4}[data-t=spin] .rb{animation:spinr .8s linear 3}[data-t=dance] .rb{animation:dance .5s ease-in-out infinite}
+[data-t=stroll] .rb{animation:walk 3.4s ease-in-out}[data-t=rainbow] .rb{animation:hue 1.2s linear infinite}
+[data-t=wave] .armR{animation:wave .4s infinite;transform-origin:252px 232px}
+[data-t=binary] #chest{animation:pulse .2s infinite}[data-t=binary] .eye{animation:pulse .25s infinite}
+#bot.talk #mouth{animation:chew .22s infinite;transform-box:fill-box;transform-origin:center}#bot.nod .head{animation:nod .3s}.growl .rb{animation:wob .25s 4}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
 </style></head><body>
-<header><h1>MIRROR AI<small id="sub"></small></h1>
-<label><span id="langl"></span> <select id="lang"><option value="tg">Тоҷикӣ</option><option value="ru">Русский</option><option value="en">English</option></select></label></header>
+<header><div class="brand"><b>MIRROR AI</b><small id="sub"></small></div><div class="hd"><button id="snd2" aria-label="Sound">♪ off</button><label><span id="langl"></span> <select id="lang"><option value="tg">Тоҷикӣ</option><option value="ru">Русский</option><option value="en">English</option></select></label></div></header>
 <main>
-<section class="stage"><div id="status"></div>
-<svg id="bot" viewBox="0 0 340 330" data-s="idle" role="img" aria-label="BYTE">
-<defs><linearGradient id="mt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4a7a"/><stop offset=".5" stop-color="#1a2547"/><stop offset="1" stop-color="#0c1330"/></linearGradient></defs>
-<ellipse cx="170" cy="312" rx="90" ry="9" fill="#22e6ff22"/>
-<rect x="120" y="215" width="100" height="80" rx="18" fill="url(#mt)" stroke="#2c3d78"/>
-<circle cx="170" cy="255" r="12" fill="none" stroke="var(--a)" class="glow"/>
-<g class="head"><line x1="170" y1="40" x2="170" y2="70" stroke="#4a5b94" stroke-width="4"/><circle id="ant" cx="170" cy="36" r="7" fill="var(--v)" class="glow"/>
-<rect x="85" y="70" width="170" height="140" rx="34" fill="url(#mt)" stroke="#3a4f94" stroke-width="2"/>
-<rect x="100" y="88" width="140" height="82" rx="22" fill="#02040c" stroke="#1c2a55"/>
-<ellipse class="eye glow" cx="140" cy="128" rx="17" ry="20"/><ellipse class="eye glow" cx="200" cy="128" rx="17" ry="20"/>
-<rect class="mouth" x="152" y="186" width="36" height="6" rx="3" fill="var(--a)"/>
-<rect x="68" y="120" width="12" height="40" rx="5" fill="#2c3d78"/><rect x="260" y="120" width="12" height="40" rx="5" fill="#2c3d78"/></g>
-<g class="gear glow"><circle cx="290" cy="60" r="16" fill="none" stroke="var(--v)" stroke-width="5" stroke-dasharray="7 5"/></g>
-<g class="wave" fill="var(--a)"><rect x="40" y="130" width="6" height="14"/><rect x="52" y="124" width="6" height="26"/><rect x="288" y="130" width="6" height="14"/><rect x="298" y="124" width="6" height="26"/></g>
-<text class="zz" x="250" y="70" fill="#8a9bc4" font-size="24">z z</text>
-<text class="warn" x="150" y="30" fill="#ff4d6d" font-size="26">⚠</text></svg>
-<div id="toast" role="status" aria-live="polite"></div></section>
-<section class="panel">
-<div class="stats" id="stats"></div>
-<nav role="tablist" id="tabs"></nav><div id="view"></div></section>
+<section class="stage" id="stage"><div class="lv"><b id="lvl"></b><div class="bar"><i id="lvb"></i></div></div>
+<div id="bubble" aria-live="polite"></div>
+<svg id="bot" viewBox="0 0 360 350" data-s="idle" role="img" aria-label="BYTE">
+<defs><linearGradient id="mt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a567a"/><stop offset=".55" stop-color="#1b2340"/><stop offset="1" stop-color="#0d1226"/></linearGradient>
+<linearGradient id="vis" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1c33"/><stop offset="1" stop-color="#02050c"/></linearGradient></defs>
+<ellipse cx="180" cy="334" rx="95" ry="9" fill="#000" opacity=".5"/>
+<g class="rb" stroke="#3a4770" stroke-width="2" stroke-linejoin="round">
+<rect x="140" y="296" width="24" height="30" rx="8" fill="url(#mt)"/><rect x="196" y="296" width="24" height="30" rx="8" fill="url(#mt)"/>
+<rect x="143" y="318" width="18" height="3" rx="1.5" fill="var(--a)" stroke="none"/><rect x="199" y="318" width="18" height="3" rx="1.5" fill="var(--a)" stroke="none"/>
+<g class="armL"><rect x="100" y="228" width="16" height="52" rx="8" fill="url(#mt)"/><circle cx="108" cy="236" r="4" fill="var(--a)" stroke="none"/></g>
+<g class="armR"><rect x="244" y="228" width="16" height="52" rx="8" fill="url(#mt)"/><circle cx="252" cy="236" r="4" fill="var(--a)" stroke="none"/></g>
+<rect x="125" y="212" width="110" height="92" rx="26" fill="url(#mt)"/>
+<path d="M142 232H218M142 284H218" stroke="#2a3558" fill="none"/><circle cx="180" cy="258" r="14" fill="#060a14" stroke="var(--a)"/><circle id="chest" cx="180" cy="258" r="6" fill="var(--a)" stroke="none"/>
+<g class="head"><line x1="180" y1="50" x2="180" y2="72"/><circle id="ant" cx="180" cy="42" r="7" fill="var(--v)" stroke="none"/>
+<rect x="84" y="108" width="16" height="44" rx="8" fill="url(#mt)"/><rect x="260" y="108" width="16" height="44" rx="8" fill="url(#mt)"/>
+<rect x="87" y="122" width="10" height="3" rx="1.5" fill="var(--a)" stroke="none"/><rect x="263" y="122" width="10" height="3" rx="1.5" fill="var(--a)" stroke="none"/>
+<rect x="96" y="70" width="168" height="140" rx="46" fill="url(#mt)"/><path d="M118 82Q180 66 242 82" stroke="#fff" stroke-opacity=".18" fill="none"/>
+<rect x="110" y="88" width="140" height="98" rx="34" fill="url(#vis)" stroke="var(--a)" stroke-opacity=".5"/><path d="M126 100Q160 94 190 100L170 150Q146 154 126 148Z" fill="#fff" opacity=".05" stroke="none"/>
+<g id="eyes" stroke="none" fill="var(--a)"><rect class="eye" x="136" y="117" width="30" height="14" rx="7"/><rect class="eye" x="194" y="117" width="30" height="14" rx="7"/></g>
+<path id="mouth" d="M148 166 Q180 190 212 166" fill="none" stroke="var(--a)" stroke-width="3" stroke-linecap="round"/></g></g>
+<g class="gear"><circle cx="305" cy="60" r="16" fill="none" stroke="var(--v)" stroke-width="3" stroke-dasharray="7 5"/></g>
+<g class="wave" fill="var(--a)"><rect x="40" y="120" width="4" height="14"/><rect x="50" y="114" width="4" height="26"/><rect x="304" y="120" width="4" height="14"/><rect x="314" y="114" width="4" height="26"/></g>
+<text class="zz" x="265" y="70" fill="#7f8aa6" font-size="24">z z</text><text class="warn" x="164" y="30" fill="#ff5d73" font-size="26">!</text>
+<g class="plate"><ellipse cx="180" cy="338" rx="70" ry="9" fill="#0b1424" stroke="var(--a)" stroke-width="2"/><g class="food"><path d="M146 334 Q180 290 214 334Z" fill="#ffb84d"/><circle cx="168" cy="314" r="5" fill="#fff" opacity=".55"/></g></g></svg>
+<div id="status"></div><div id="toast" role="status" aria-live="polite"></div></section>
+<section class="panel"><div class="stats" id="stats"></div><nav role="tablist" id="tabs"></nav><div id="view"></div></section>
 </main>
+
 <script>
 const T={
 en:{sub:"Digital robot companion",lang:"Language",robot:"Robot",chat:"Chat",game:"Game",shop:"Shop",data:"Data",energy:"Energy",mood:"Mood",xp:"Intelligence XP",quality:"Code Quality",focus:"Focus",battery:"Battery",coins:"Coins",
@@ -84,7 +120,7 @@ low:"Not enough energy, battery or focus.",noitem:"You don't have that item. Buy
 send:"Send",ph:"Message BYTE…",nobackend:"No AI backend is connected. This page runs without a server, so it cannot hold an API key or call a model. Run the Node server from the project spec to enable real AI answers.",offline:"Offline (local, not an AI model): ",stat_reply:"Energy {e}, battery {b}, coins {c}.",hint:"Local replies only. Type “status” for BYTE's stats.",
 mic:"Start listening",stop:"Stop",nomic:"Speech recognition isn't supported or the microphone was denied.",speak:"Read replies aloud",
 start:"Start",pause:"Pause",resume:"Resume",restart:"Restart",score:"Score",lives:"Lives",best:"Best",win:"You win! +{n} coins",lose:"Game over. +{n} coins",gdesc:"Catch cyan cells, dodge red bolts. Reach 20 to win. Move with your finger, mouse or arrows.",
-buy:"Buy",owned:"Owned",use:"Use",cell:"Energy cell",coffee:"Coffee",food:"Food",theme:"Violet theme",acc:"Glow antenna",bought:"Purchased.",
+buy:"Buy",owned:"Owned",use:"Use",cell:"Energy cell",coffee:"Coffee",food:"Food",theme:"Violet theme",acc:"Glow antenna",bought:"Purchased.",lab:"Code Lab",check:"Check my code",codeph:"Write your code here by hand…",codelang:"Language",syntaxerr:"Syntax error: {m}",nohints:"Write some code first.",short:"Write at least 3 lines.",clean:"No problems found. Nice work! +{n} coins",cleanold:"Clean again, but BYTE already rewarded this exact code.",h_var:"Line {l}: use let or const instead of var.",h_eq:"Line {l}: use === instead of ==.",h_log:"Line {l}: remove the leftover console.log before you finish.",h_long:"Line {l}: this line is very long. Split it.",h_unused:"Variable “{m}” is declared but never used.",h_nocom:"Add a few comments so others can read your code.",h_empty:"Line {l}: an empty catch hides errors. Handle or log them.",h_colon:"Line {l}: this statement should end with a colon “:”.",h_tab:"Mixed tabs and spaces. Use only spaces.",h_none:"Line {l}: use “is None” instead of “== None”.",h_print:"Line {l}: use print(...) with parentheses.",lnote:"Local check by BYTE: it reads your code and never runs it. It is not an AI model.",found:"BYTE found {n} thing(s) to improve.",st_eating:"Eating",learn:"Academy",tricks:"Tricks",locked:"Learn “{n}” to unlock this trick",full:"Fullness",lvname:"Lv",newtrick:"Learned! +25 XP and +10 coins.",bad_l:"Not quite. Read the text again and retry.",st_dizzy:"Dizzy",tr_wave:"Wave",tr_hop:"Hop",tr_spin:"Spin",tr_dance:"Dance",tr_binary:"Binary beeps",tr_rainbow:"Rainbow",pick:"Pick a lesson, read it and answer the question: BYTE learns a new trick. Each try costs energy and focus.",say:{greet:["Hi! I'm BYTE. Poke me, pet me, feed me!"],poke1:["Hehe, that tickles!","Boop! Again?"],poke2:["Hey, easy there!"],dizzy:["Whoa… everything is spinning…"],pet:["Mmm, that feels nice.","Purr… more please!"],grumpy:["Zzz… five more minutes…"],code:["Typing away… tap tap tap!"],learn:["Ooh, school time! Pick a lesson."],ok:["I learned something new! Check my tricks."],bad:["Hmm, not quite. Read the lesson again."],eat:["Nom nom nom! Delicious!"],charge:["Battery full of electric joy!"],rest:["Ahh, a little rest helps."],sleep:["Good night… zzz"],wake:["Good morning! I'm ready!"],trick:["Ta-da! Watch this!"],hungry:["My tummy is rumbling…"],idle:["La la la…","I wonder what's new on the internet."],win:["We did it! Champion!"],lose:["Next time we win!"],low:["I'm too tired, or I don't have that."],lvl:["LEVEL UP! I feel smarter!"],buy:["Shiny! Thank you!"]},
 export:"Export data",clear:"Clear all data",confirm:"Delete all saved data? This cannot be undone.",cleared:"Data cleared.",dnote:"Everything is saved only in this browser. No API keys are stored."},
 ru:{sub:"Цифровой робот-компаньон",lang:"Язык",robot:"Робот",chat:"Чат",game:"Игра",shop:"Магазин",data:"Данные",energy:"Энергия",mood:"Настроение",xp:"Опыт интеллекта",quality:"Качество кода",focus:"Фокус",battery:"Батарея",coins:"Монеты",
 a_code:"Писать код",a_bug:"Исправлять баги",a_learn:"Учиться",a_coffee:"Дать кофе",a_food:"Дать еду",a_charge:"Зарядить батарею",a_rest:"Отдых",a_sleep:"Спать",a_wake:"Разбудить",
@@ -93,7 +129,7 @@ low:"Не хватает энергии, батареи или фокуса.",no
 send:"Отправить",ph:"Напишите BYTE…",nobackend:"AI-сервер не подключён. Эта страница работает без сервера, поэтому не может хранить API-ключ и вызывать модель. Запустите Node-сервер из задания, чтобы получать настоящие ответы ИИ.",offline:"Офлайн (локально, не ИИ-модель): ",stat_reply:"Энергия {e}, батарея {b}, монеты {c}.",hint:"Только локальные ответы. Напишите «status», чтобы увидеть статистику.",
 mic:"Начать слушать",stop:"Стоп",nomic:"Распознавание речи не поддерживается или микрофон запрещён.",speak:"Озвучивать ответы",
 start:"Старт",pause:"Пауза",resume:"Продолжить",restart:"Заново",score:"Счёт",lives:"Жизни",best:"Рекорд",win:"Победа! +{n} монет",lose:"Игра окончена. +{n} монет",gdesc:"Ловите голубые ячейки, избегайте красных болтов. 20 очков — победа. Управление: палец, мышь или стрелки.",
-buy:"Купить",owned:"Куплено",use:"Выбрать",cell:"Энергоячейка",coffee:"Кофе",food:"Еда",theme:"Фиолетовая тема",acc:"Светящаяся антенна",bought:"Куплено.",
+buy:"Купить",owned:"Куплено",use:"Выбрать",cell:"Энергоячейка",coffee:"Кофе",food:"Еда",theme:"Фиолетовая тема",acc:"Светящаяся антенна",bought:"Куплено.",lab:"Код-лаборатория",check:"Проверить код",codeph:"Пишите код здесь вручную…",codelang:"Язык",syntaxerr:"Синтаксическая ошибка: {m}",nohints:"Сначала напишите код.",short:"Напишите минимум 3 строки.",clean:"Проблем не найдено. Отличная работа! +{n} монет",cleanold:"Код снова чистый, но за него BYTE уже наградил вас.",h_var:"Строка {l}: используйте let или const вместо var.",h_eq:"Строка {l}: используйте === вместо ==.",h_log:"Строка {l}: уберите оставшийся console.log.",h_long:"Строка {l}: слишком длинная. Разбейте её.",h_unused:"Переменная «{m}» объявлена, но не используется.",h_nocom:"Добавьте комментарии, чтобы другим было легче читать код.",h_empty:"Строка {l}: пустой catch скрывает ошибки. Обработайте их.",h_colon:"Строка {l}: в конце нужно двоеточие «:».",h_tab:"Смешаны табы и пробелы. Используйте только пробелы.",h_none:"Строка {l}: используйте «is None» вместо «== None».",h_print:"Строка {l}: используйте print(...) со скобками.",lnote:"Локальная проверка BYTE: он читает код, но не запускает его. Это не ИИ-модель.",found:"BYTE нашёл, что улучшить: {n}.",st_eating:"Ест",learn:"Академия",tricks:"Трюки",locked:"Выучите «{n}», чтобы открыть трюк",full:"Сытость",lvname:"Ур.",newtrick:"Выучено! +25 опыта и +10 монет.",bad_l:"Не совсем. Перечитайте текст и попробуйте ещё.",st_dizzy:"Кружится голова",tr_wave:"Помахать",tr_hop:"Прыжок",tr_spin:"Вращение",tr_dance:"Танец",tr_binary:"Двоичные сигналы",tr_rainbow:"Радуга",pick:"Выберите урок, прочитайте и ответьте на вопрос: BYTE освоит новый трюк. Каждая попытка тратит энергию и фокус.",say:{greet:["Привет! Я BYTE. Потыкай, погладь, покорми меня!"],poke1:["Хи-хи, щекотно!","Бип! Ещё раз?"],poke2:["Эй, полегче!"],dizzy:["Ух… всё кружится…"],pet:["М-м, как приятно.","Мур… ещё, пожалуйста!"],grumpy:["Zzz… ещё пять минуточек…"],code:["Стучу по клавишам… тук-тук-тук!"],learn:["О, урок! Выбери тему."],ok:["Я узнал новое! Загляни в мои трюки."],bad:["Хм, не совсем. Перечитай урок."],eat:["Ням-ням-ням! Вкуснотища!"],charge:["Батарея полна энергии!"],rest:["Ах, отдых помогает."],sleep:["Спокойной ночи… zzz"],wake:["Доброе утро! Я готов!"],trick:["Та-дам! Смотри!"],hungry:["Живот урчит…"],idle:["Ла-ла-ла…","Интересно, что нового в интернете."],win:["Мы сделали это! Чемпион!"],lose:["В следующий раз победим!"],low:["Я слишком устал, или у меня этого нет."],lvl:["НОВЫЙ УРОВЕНЬ! Я стал умнее!"],buy:["Блестяще! Спасибо!"]},
 export:"Экспорт данных",clear:"Удалить все данные",confirm:"Удалить все сохранённые данные? Это нельзя отменить.",cleared:"Данные удалены.",dnote:"Всё хранится только в этом браузере. API-ключи не сохраняются."},
 tg:{sub:"Ҳамроҳи рақамии робот",lang:"Забон",robot:"Робот",chat:"Чат",game:"Бозӣ",shop:"Мағоза",data:"Маълумот",energy:"Энергия",mood:"Кайфият",xp:"Таҷрибаи ақл",quality:"Сифати код",focus:"Тамаркуз",battery:"Батарея",coins:"Тангаҳо",
 a_code:"Навиштани код",a_bug:"Ислоҳи хатогиҳо",a_learn:"Омӯхтан",a_coffee:"Қаҳва додан",a_food:"Хӯрок додан",a_charge:"Пур кардани батарея",a_rest:"Истироҳат",a_sleep:"Хоб",a_wake:"Бедор кардан",
@@ -102,46 +138,153 @@ low:"Энергия, батарея ё тамаркуз намерасад.",noi
 send:"Фиристодан",ph:"Ба BYTE нависед…",nobackend:"Сервери AI пайваст нашудааст. Ин саҳифа бе сервер кор мекунад, барои ҳамин калиди API-ро нигоҳ дошта ва модели AI-ро даъват карда наметавонад. Барои посухҳои воқеии AI сервери Node-ро ба кор андозед.",offline:"Оффлайн (маҳаллӣ, модели AI нест): ",stat_reply:"Энергия {e}, батарея {b}, тангаҳо {c}.",hint:"Танҳо посухҳои маҳаллӣ. «status» нависед.",
 mic:"Гӯш кардан оғоз",stop:"Қатъ",nomic:"Шиносоии овоз дастгирӣ намешавад ё микрофон манъ шудааст.",speak:"Посухҳоро бо овоз хондан",
 start:"Оғоз",pause:"Таваққуф",resume:"Идома",restart:"Аз нав",score:"Хол",lives:"Ҷонҳо",best:"Беҳтарин",win:"Ғалаба! +{n} танга",lose:"Бозӣ тамом шуд. +{n} танга",gdesc:"Ячейкаҳои кабудро бигиред, болтҳои сурхро пешгирӣ кунед. 20 хол — ғалаба. Идоракунӣ: ангушт, муш ё тирҳо.",
-buy:"Харидан",owned:"Харида шуд",use:"Интихоб",cell:"Ячейкаи энергия",coffee:"Қаҳва",food:"Хӯрок",theme:"Мавзӯи бунафш",acc:"Антенноси дурахшон",bought:"Харида шуд.",
+buy:"Харидан",owned:"Харида шуд",use:"Интихоб",cell:"Ячейкаи энергия",coffee:"Қаҳва",food:"Хӯрок",theme:"Мавзӯи бунафш",acc:"Антенноси дурахшон",bought:"Харида шуд.",lab:"Озмоишгоҳи код",check:"Тафтиши код",codeph:"Кодро дар ин ҷо бо даст нависед…",codelang:"Забон",syntaxerr:"Хатои синтаксис: {m}",nohints:"Аввал код нависед.",short:"Ақаллан 3 сатр нависед.",clean:"Мушкил ёфт нашуд. Офарин! +{n} танга",cleanold:"Код боз тоза аст, аммо BYTE барои ин код аллакай мукофот додааст.",h_var:"Сатри {l}: ба ҷои var let ё const истифода баред.",h_eq:"Сатри {l}: ба ҷои == аз === истифода баред.",h_log:"Сатри {l}: console.log-и мондаро тоза кунед.",h_long:"Сатри {l}: хеле дароз аст. Онро ҷудо кунед.",h_unused:"Тағйирёбандаи «{m}» эълон шудааст, вале истифода намешавад.",h_nocom:"Шарҳ илова кунед, то дигарон кодро осон хонанд.",h_empty:"Сатри {l}: catch-и холӣ хатоҳоро пинҳон мекунад. Онҳоро коркард кунед.",h_colon:"Сатри {l}: дар охир нуқтаи дукарата «:» лозим аст.",h_tab:"Tab ва фосилаҳо омехта шудаанд. Танҳо фосилаҳоро истифода баред.",h_none:"Сатри {l}: ба ҷои «== None» «is None» нависед.",h_print:"Сатри {l}: print(...)-ро бо қавс истифода баред.",lnote:"Тафтиши маҳаллии BYTE: он кодро мехонад, вале иҷро намекунад. Ин модели AI нест.",found:"BYTE {n} чизро барои беҳтар кардан ёфт.",st_eating:"Мехӯрад",learn:"Академия",tricks:"Ҳунарҳо",locked:"Барои кушодан «{n}»-ро биомӯзед",full:"Сери",lvname:"Сатҳ",newtrick:"Омӯхта шуд! +25 таҷриба ва +10 танга.",bad_l:"Дуруст нест. Матнро аз нав хонед ва боз кӯшиш кунед.",st_dizzy:"Сар чарх мезанад",tr_wave:"Даст афшондан",tr_hop:"Ҷаҳидан",tr_spin:"Давр задан",tr_dance:"Рақс",tr_binary:"Сигналҳои дуӣ",tr_rainbow:"Рангинкамон",pick:"Дарсро интихоб кунед, хонед ва ба савол ҷавоб диҳед: BYTE ҳунари нав меомӯзад. Ҳар кӯшиш энергия ва тамаркузро сарф мекунад.",say:{greet:["Салом! Ман BYTE. Маро нил кун, навозиш кун, хӯрок деҳ!"],poke1:["Хи-хи, ғиҷғиҷак мешавам!","Бип! Боз?"],poke2:["Ҳей, оҳиста!"],dizzy:["Вой… ҳама чиз давр мезанад…"],pet:["М-м, чӣ хуш.","Мур… боз, лутфан!"],grumpy:["Zzz… панҷ дақиқаи дигар…"],code:["Клавишаҳоро мезанам… тақ-тақ-тақ!"],learn:["О, дарс! Мавзӯъро интихоб кун."],ok:["Ман чизи нав омӯхтам! Ҳунарҳоямро бин."],bad:["Ҳмм, дуруст нест. Дарсро аз нав хон."],eat:["Ням-ням-ням! Болаззат!"],charge:["Батарея пур аз энергия!"],rest:["Аҳ, истироҳат кӯмак мекунад."],sleep:["Шаб ба хайр… zzz"],wake:["Субҳ ба хайр! Омодаам!"],trick:["Та-дам! Бин!"],hungry:["Шикамам ғур-ғур мекунад…"],idle:["Ла-ла-ла…","Ман мепурсам, имрӯз дар интернет чӣ нав аст."],win:["Ҳамин тавр! Қаҳрамон!"],lose:["Дафъаи оянда мебарем!"],low:["Хеле хастаам, ё ин ашё надорам."],lvl:["САТҲИ НАВ! Ман доно шудам!"],buy:["Чӣ зебо! Ташаккур!"]},
 export:"Содироти маълумот",clear:"Тоза кардани ҳама маълумот",confirm:"Ҳама маълумоти захирашуда нест шавад? Бозгашт нест.",cleared:"Маълумот тоза шуд.",dnote:"Ҳама танҳо дар ин браузер нигоҳ дошта мешавад. Калидҳои API захира намешаванд."}};
 const CFG={tick:5000,drain:.4,sleepGain:2,bat:.25,max:100},KEY="mirrorai.v1";
-const D={lang:"en",energy:80,mood:70,xp:0,quality:20,focus:70,battery:90,coins:20,sleeping:false,inv:{cell:1,coffee:0,food:0},themes:["cyan"],theme:"cyan",acc:false,best:0,chat:[],speak:false};
+const D={lang:"en",energy:80,mood:70,xp:0,quality:20,focus:70,battery:90,coins:20,sleeping:false,inv:{cell:1,coffee:0,food:0},themes:["cyan"],theme:"cyan",acc:false,best:0,chat:[],speak:false,ok:[],code:"",lg:"js",full:80,snd:true,lv:1,learned:[]};
 let S;try{S=Object.assign({},D,JSON.parse(localStorage.getItem(KEY)||"{}"));S.inv=Object.assign({},D.inv,S.inv)}catch(e){S={...D}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+if(!S.sndSet)S.snd=true;
 const $=id=>document.getElementById(id),t=k=>(T[S.lang]||T.en)[k]||T.en[k]||k;
 const cl=v=>Math.max(0,Math.min(CFG.max,Math.round(v*10)/10));
 let tab="robot",tm=null,tick=null;
 function base(){return S.sleeping?"sleeping":S.energy<20?"tired":"idle"}
-function setState(st,ms){clearTimeout(tm);$("bot").dataset.s=st;$("status").textContent=t("st_"+st);if(ms)tm=setTimeout(()=>setState(base()),ms)}
+function setState(st,ms){clearTimeout(tm);tm=0;$("bot").dataset.s=st;$("status").textContent=t("st_"+st);const k=SM[st]||"smile",m=$("mouth");m.setAttribute("d",MO[k]);m.setAttribute("fill",k==="big"?"var(--a)":"none");if(st==="sleeping")$("eyes").style.transform="";if(ms)tm=setTimeout(()=>{tm=0;setState(base())},ms)}
 function toast(m){$("toast").textContent=m}
 const ACT={code:{c:{energy:-12,battery:-6,focus:-10},g:{xp:8,quality:5,coins:6},st:"coding",need:1},bug:{c:{energy:-10,battery:-5,focus:-12},g:{xp:6,quality:10,coins:5},st:"debugging",need:1},
-learn:{c:{energy:-8,battery:-3,focus:-8},g:{xp:14,mood:3},st:"curious",need:1},coffee:{item:"coffee",g:{energy:20,focus:25},st:"happy"},food:{item:"food",g:{energy:12,mood:15},st:"happy"},
+learn:{c:{energy:-8,battery:-3,focus:-8},g:{xp:14,mood:3},st:"curious",need:1},coffee:{item:"coffee",g:{energy:20,focus:25,full:5},st:"eating"},food:{item:"food",g:{energy:12,mood:15,full:30},st:"eating"},
 charge:{item:"cell",g:{battery:40},st:"happy"},rest:{g:{energy:15,focus:5,mood:2},st:"idle"}};
 function act(k){
- if(k==="wake"){S.sleeping=false;setState("curious",1500);toast(t("done"));return render()}
- if(k==="sleep"){S.sleeping=true;setState("sleeping");toast(t("done"));save();return render()}
- if(S.sleeping)return toast(t("asleep"));
+ if(k==="wake"){S.sleeping=false;react("wake","curious",1800);save();return render()}
+ if(k==="sleep"){S.sleeping=true;setState("sleeping");react("sleep");save();return render()}
+ if(k==="learn"){tab="learn";render();return react("learn","curious",2000)}
+ if(S.sleeping){react("grumpy");return toast(t("asleep"))}
  const a=ACT[k];
  if(a.item&&S.inv[a.item]<1)return err(t("noitem"));
  if(a.c)for(const s in a.c)if(S[s]+a.c[s]<0)return err(t("low"));
  if(a.item)S.inv[a.item]--;
  for(const o of [a.c||{},a.g])for(const s in o){S[s]=s==="xp"||s==="coins"?Math.max(0,S[s]+o[s]):cl(S[s]+o[s])}
- setState(a.st,2500);toast(t("a_"+k)+" ✓");save();render()}
-function err(m){setState("error",1600);toast(m)}
-function stats(){const L=["energy","mood","xp","quality","focus","battery","coins"];
- $("stats").innerHTML=L.map(s=>`<div class="st"><label><span>${t(s)}</span><b>${s==="coins"||s==="xp"?S[s]:Math.round(S[s])}</b></label><div class="bar"><i style="width:${s==="coins"?Math.min(100,S[s]):s==="xp"?S[s]%100:S[s]}%"></i></div></div>`).join("")}
-function tabs(){const L=["robot","chat","game","shop","data"];
+ react({code:"code",bug:"code",coffee:"eat",food:"eat",charge:"charge",rest:"rest"}[k],a.st,2500);
+ if(k==="food"||k==="coffee")fx("◆",3);else if(k==="charge")fx("◆",4);else if(k==="code"||k==="bug")fx("{ }",3);
+ if(a.g.xp)fx("+"+a.g.xp+" XP",1,"#4de1ff");
+ toast(t("a_"+k)+" ✓");save();render()}
+function err(m){setState("error",1600);toast(m);say(line("low")||m)}
+function stats(){const L=["energy","full","mood","focus","battery","quality","xp","coins"],IC={energy:"⚡",full:"🍎",mood:"💛",focus:"🎯",battery:"🔋",quality:"✅",xp:"⭐",coins:"🪙"};
+ const L2=Math.floor(S.xp/60)+1;if(L2>S.lv){S.lv=L2;levelup()}
+ $("lvl").textContent=t("lvname")+" "+S.lv;$("lvb").style.width=(S.xp%60)/60*100+"%";
+ $("stats").innerHTML=L.map(s=>`<div class="st"><label><span>${t(s)}</span><b>${s==="coins"||s==="xp"?S[s]:Math.round(S[s])}</b></label><div class="bar"><i style="width:${s==="coins"?Math.min(100,S[s]):s==="xp"?S[s]%60/60*100:S[s]}%"></i></div></div>`).join("")}
+function tabs(){const L=["robot","learn","lab","chat","game","shop","data"];
  $("tabs").innerHTML=L.map(x=>`<button role="tab" aria-selected="${x===tab}" data-t="${x}">${t(x)}</button>`).join("");
  $("tabs").onclick=e=>{const b=e.target.closest("[data-t]");if(b){if(tab==="game")gpause(true);tab=b.dataset.t;render()}}}
-function theme(){const r=document.documentElement.style;r.setProperty("--a",S.theme==="violet"?"#b388ff":"#22e6ff");r.setProperty("--v",S.theme==="violet"?"#ff6ec7":"#8b5cf6");$("ant").setAttribute("r",S.acc?11:7)}
-function render(){document.documentElement.lang=S.lang;$("sub").textContent=t("sub");$("langl").textContent=t("lang");$("lang").value=S.lang;theme();stats();tabs();$("status").textContent=t("st_"+$("bot").dataset.s);
- const v=$("view");
- if(tab==="robot"){v.innerHTML='<div class="grid">'+["code","bug","learn","coffee","food","charge","rest",S.sleeping?"wake":"sleep"].map(k=>`<button data-a="${k}">${t("a_"+k)}${ACT[k]&&ACT[k].item?" ("+S.inv[ACT[k].item]+")":""}</button>`).join("")+"</div>";v.onclick=e=>{const b=e.target.closest("[data-a]");if(b)act(b.dataset.a)}}
- else if(tab==="chat")chatUI(v);else if(tab==="game")gameUI(v);else if(tab==="shop")shopUI(v);else dataUI(v)}
+function theme(){const r=document.documentElement.style;r.setProperty("--a",S.theme==="violet"?"#b08cff":"#4de1ff");r.setProperty("--v",S.theme==="violet"?"#ff7ad9":"#8b7bff");$("ant").setAttribute("r",S.acc?11:7)}
+function render(){document.documentElement.lang=S.lang;$("sub").textContent=t("sub");$("langl").textContent=t("lang");$("lang").value=S.lang;$("snd2").textContent=S.snd?"♪ on":"♪ off";
+ const h=new Date().getHours();$("stage").classList.toggle("night",h<6||h>=20);theme();stats();tabs();$("status").textContent=t("st_"+$("bot").dataset.s);const v=$("view");
+ if(tab==="robot"){v.innerHTML='<div class="grid">'+["code","bug","learn","coffee","food","charge","rest",S.sleeping?"wake":"sleep"].map(k=>`<button data-a="${k}">${t("a_"+k)}${ACT[k]&&ACT[k].item?" ("+S.inv[ACT[k].item]+")":""}</button>`).join("")+`</div><h3>${t("tricks")}</h3><div class="grid">`+TR.map(x=>{const lk=false;return `<button data-tr="${x.id}" ${lk?`disabled title="${fmt("locked",{n:lx(LES.find(l=>l.id===x.u))[0]})}"`:""}>${lk?"◇":"◆"} ${t("tr_"+x.id)}</button>`}).join("")+"</div>";
+  v.onclick=e=>{const b=e.target.closest("[data-a]"),c=e.target.closest("[data-tr]");if(b)act(b.dataset.a);if(c)trick(c.dataset.tr)}}
+ else if(tab==="learn")learnUI(v);else if(tab==="lab")labUI(v);else if(tab==="chat")chatUI(v);else if(tab==="game")gameUI(v);else if(tab==="shop")shopUI(v);else dataUI(v)}
+const MO={smile:"M148 166 Q180 190 212 166",flat:"M154 174 H206",o:"M172 164 a8 10 0 1 0 16 0 a8 10 0 1 0 -16 0",sad:"M150 182 Q180 160 210 182",big:"M146 162 Q180 202 214 162 Z"};
+const SM={idle:"smile",listening:"o",thinking:"flat",speaking:"big",happy:"big",curious:"o",working:"flat",coding:"flat",debugging:"flat",tired:"sad",sleeping:"flat",error:"sad",celebrating:"big",eating:"big",dizzy:"o"};
+const SND={eat:[500,420,500],ok:[523,659,784],bad:[200,150],lvl:[523,659,784,1046],trick:[440,660],win:[523,784,1046],buy:[880,1100]};
+const ICO={code:"⌨",bug:"🐞",learn:"📘",coffee:"☕",food:"🍎",charge:"🔋",rest:"🛋",sleep:"🌙",wake:"☀"};
+const TR=[{id:"wave"},{id:"hop",u:"vars"},{id:"spin",u:"loops"},{id:"dance",u:"funcs"},{id:"binary",u:"bin"},{id:"rainbow",u:"html"}];
+const LES=[
+{id:"vars",x:{en:["Variables","A variable is a named box that stores a value. In `let age = 12;` the box is called age and holds 12.","What does `let score = 5;` do?",["Creates a box named score holding 5","Deletes the number 5","Prints 5 on the screen"],0],ru:["Переменные","Переменная — это коробка с именем, в которой лежит значение. В `let age = 12;` коробка называется age и хранит 12.","Что делает `let score = 5;`?",["Создаёт коробку score со значением 5","Удаляет число 5","Выводит 5 на экран"],0],tg:["Тағйирёбандаҳо","Тағйирёбанда — қуттиест бо ном, ки қимат нигоҳ медорад. Дар `let age = 12;` қуттӣ age ном дорад ва 12-ро нигоҳ медорад.","`let score = 5;` чӣ мекунад?",["Қуттии score-ро бо қимати 5 месозад","Рақами 5-ро нест мекунад","5-ро дар экран чоп мекунад"],0]}},
+{id:"loops",x:{en:["Loops","A loop repeats instructions. `for (let i=0;i<3;i++)` runs its body 3 times, with i = 0, 1, 2.","How many times does `for (let i=0;i<4;i++)` repeat?",["3","4","5"],1],ru:["Циклы","Цикл повторяет инструкции. `for (let i=0;i<3;i++)` выполняет тело 3 раза при i = 0, 1, 2.","Сколько раз повторится `for (let i=0;i<4;i++)`?",["3","4","5"],1],tg:["Даврҳо","Давр дастурҳоро такрор мекунад. `for (let i=0;i<3;i++)` баданаро 3 маротиба иҷро мекунад, бо i = 0, 1, 2.","`for (let i=0;i<4;i++)` чанд маротиба такрор мешавад?",["3","4","5"],1]}},
+{id:"funcs",x:{en:["Functions","A function is a recipe you can reuse. Write it once, then call it as many times as you like with different inputs.","What is a function good for?",["Reusing the same steps again and again","Making the screen brighter","Saving files to the disk"],0],ru:["Функции","Функция — это рецепт, который можно использовать снова. Напишите её один раз и вызывайте сколько угодно раз с разными данными.","Для чего нужна функция?",["Чтобы повторно использовать одни и те же шаги","Чтобы сделать экран ярче","Чтобы сохранять файлы на диск"],0],tg:["Функсияҳо","Функсия — дастурест, ки бор-бор истифода мешавад. Онро як бор нависед ва бо маълумоти гуногун бисёр маротиба даъват кунед.","Функсия барои чӣ лозим аст?",["Барои такроран истифода бурдани қадамҳои якхела","Барои равшантар кардани экран","Барои захира кардани файлҳо дар диск"],0]}},
+{id:"bin",x:{en:["Binary","Computers use only 0 and 1. Counting in binary: 0, 1, 10, 11, 100. So 11 in binary is 3.","What is 10 in binary?",["1","2","10"],1],ru:["Двоичный код","Компьютеры используют только 0 и 1. Счёт в двоичной системе: 0, 1, 10, 11, 100. Значит, 11 в двоичной — это 3.","Чему равно 10 в двоичной системе?",["1","2","10"],1],tg:["Системаи дуӣ","Компютерҳо танҳо 0 ва 1-ро истифода мебаранд. Ҳисоб дар системаи дуӣ: 0, 1, 10, 11, 100. Яъне 11 дар системаи дуӣ 3 аст.","10 дар системаи дуӣ чанд аст?",["1","2","10"],1]}},
+{id:"ai",x:{en:["How AI learns","An AI model learns patterns from many examples. It predicts likely answers, so it can still make mistakes.","Why should you double-check an AI answer?",["It never makes mistakes","It predicts likely answers and can be wrong","It only works at night"],1],ru:["Как учится ИИ","Модель ИИ находит закономерности в множестве примеров. Она предсказывает вероятные ответы, поэтому может ошибаться.","Почему ответ ИИ нужно перепроверять?",["Он никогда не ошибается","Он предсказывает вероятные ответы и может ошибиться","Он работает только ночью"],1],tg:["ИИ чӣ тавр меомӯзад","Модели ИИ аз мисолҳои зиёд қонуниятҳоро меёбад. Он ҷавобҳои эҳтимолиро пешгӯӣ мекунад, барои ҳамин метавонад хато кунад.","Чаро ҷавоби ИИ-ро бояд бознигарӣ кард?",["Он ҳеҷ гоҳ хато намекунад","Он ҷавобҳои эҳтимолиро пешгӯӣ мекунад ва метавонад хато кунад","Он танҳо шабона кор мекунад"],1]}},
+{id:"html",x:{en:["Web pages","HTML describes a page's structure. `<h1>` is a big heading and `<p>` is a paragraph.","Which tag makes a big heading?",["<p>","<h1>","<img>"],1],ru:["Веб-страницы","HTML описывает структуру страницы. `<h1>` — крупный заголовок, `<p>` — абзац.","Какой тег делает крупный заголовок?",["<p>","<h1>","<img>"],1],tg:["Саҳифаҳои веб","HTML сохтори саҳифаро тасвир мекунад. `<h1>` — сарлавҳаи калон, `<p>` — банд.","Кадом тег сарлавҳаи калон месозад?",["<p>","<h1>","<img>"],1]}}];
+const lx=l=>l.x[S.lang]||l.x.en;
+let sayT=0,idle=0,nx=8,n5=0,trT=0,dn=0,mv=0,lx0=0,ly0=0,pt=0,petted=0,lastPet=0,pokes=[],AC=null;
+const bot=$("bot");
+function say(m){const b=$("bubble");if(!b)return;clearInterval(sayT);let i=0;b.textContent="";sayT=setInterval(()=>{b.textContent=m.slice(0,++i);if(i>=m.length)clearInterval(sayT)},22)}
+const line=ev=>{const A=(T[S.lang].say||T.en.say)[ev]||[];return A[Math.floor(Math.random()*A.length)]||""};
+function beep(f,d=.09,ty="square",v=.05){if(!S.snd||!f)return;try{ac();const o=AC.createOscillator(),g=AC.createGain();o.type=ty;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+function ac(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();return AC}catch(e){return null}}
+function tone(f0,f1,d,ty,v,at){const c=ac();if(!c||!S.snd)return;const t0=c.currentTime+(at||0),o=c.createOscillator(),g=c.createGain();o.type=ty||"sine";o.frequency.setValueAtTime(f0,t0);if(f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t0+d*.7);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(v||.12,t0+.02);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(c.destination);o.start(t0);o.stop(t0+d+.05)}
+function pleasure(){const k=Math.pow(2,(Math.floor(Math.random()*5)-2)/12);tone(420*k,760*k,.16,"sine",.16);tone(1180*k,1180*k,.5,"sine",.07,.06);tone(1770*k,1770*k,.4,"sine",.035,.09)}
+function purr(){const c=ac();if(!c||!S.snd)return;const t0=c.currentTime,o=c.createOscillator(),l=c.createOscillator(),lg=c.createGain(),g=c.createGain();o.type="triangle";o.frequency.setValueAtTime(95,t0);l.frequency.value=26;lg.gain.value=.04;l.connect(lg);lg.connect(g.gain);g.gain.setValueAtTime(.001,t0);g.gain.linearRampToValueAtTime(.09,t0+.25);g.gain.linearRampToValueAtTime(.001,t0+1.3);o.connect(g);g.connect(c.destination);o.start(t0);l.start(t0);o.stop(t0+1.4);l.stop(t0+1.4);tone(300,420,.6,"sine",.06,.1)}
+const jingle=a=>a.forEach((f,i)=>setTimeout(()=>beep(f),i*100));
+const TALK=new Set(["poke1","poke2","dizzy","pet","grumpy"]);
+function talk(m){if(!S.snd||!window.speechSynthesis||!m)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(m.replace(/…/g,"."));const L={tg:"tg-TJ",ru:"ru-RU",en:"en-US"}[S.lang],vs=speechSynthesis.getVoices();
+ let v=vs.find(x=>x.lang.toLowerCase().startsWith(L.slice(0,2)));u.lang=L;if(!v&&S.lang==="tg"){v=vs.find(x=>x.lang.toLowerCase().startsWith("ru"));u.lang="ru-RU"}
+ if(v)u.voice=v;u.pitch=1.3;u.rate=1.05;u.onstart=()=>bot.classList.add("talk");u.onend=u.onerror=()=>bot.classList.remove("talk");speechSynthesis.speak(u)}catch(e){}}
+function react(ev,st,ms){const m=line(ev);if(m){say(m);if(TALK.has(ev))talk(m)}if(SND[ev])jingle(SND[ev]);if(st)setState(st,ms||2200);idle=0}
+function fx(txt,n,col){const st=$("stage");for(let i=0;i<(n||1);i++){const e=document.createElement("span");e.className="fx";e.textContent=txt;if(col)e.style.color=col;e.style.left=(20+Math.random()*60)+"%";e.style.top=(25+Math.random()*30)+"%";e.style.setProperty("--dx",(Math.random()*120-60)+"px");st.appendChild(e);setTimeout(()=>e.remove(),1500)}}
+function confetti(){const c=["#4de1ff","#8b7bff","#ffffff","#ff7ad9"];for(let i=0;i<28;i++)fx("■",1,c[i%4])}
+function levelup(){react("lvl","celebrating",3000);confetti()}
+function look(x,y){if(S.sleeping)return;const r=bot.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.38,dx=x-cx,dy=y-cy,d=Math.hypot(dx,dy)||1,k=Math.min(1,d/200);$("eyes").style.transform=`translate(${dx/d*7*k}px,${dy/d*5*k}px)`}
+document.addEventListener("pointermove",e=>look(e.clientX,e.clientY));
+document.addEventListener("click",e=>{if(!e.target.closest("button"))return;beep(700,.05);look(e.clientX,e.clientY);bot.classList.remove("nod");void bot.getBoundingClientRect();bot.classList.add("nod");setTimeout(()=>bot.classList.remove("nod"),320)});
+$("snd2").onclick=()=>{S.snd=!S.snd;S.sndSet=1;save();$("snd2").textContent=S.snd?"♪ on":"♪ off";beep(880)};
+function poke(){pleasure();const n=Date.now();pokes=pokes.filter(x=>n-x<3000);pokes.push(n);
+ if(S.sleeping){S.sleeping=false;S.mood=cl(S.mood-2);react("grumpy","curious",1800);save();return render()}
+ if(pokes.length>=6){S.mood=cl(S.mood-2);react("dizzy","dizzy",2600);pokes=[];fx("✦",4)}
+ else if(pokes.length>=3)react("poke2","curious",1000);
+ else{react("poke1","happy",1200);fx("✦",2)}
+ stats()}
+function petIt(){petted=1;const n=Date.now();if(S.sleeping||n-lastPet<1500)return;lastPet=n;purr();S.mood=cl(S.mood+2);react("pet","happy",2000);fx("✦",4,"#ff7ad9");stats();save()}
+bot.onpointerdown=e=>{ac();dn=1;mv=0;petted=0;lx0=e.clientX;ly0=e.clientY;try{bot.setPointerCapture(e.pointerId)}catch(_){}clearTimeout(pt);pt=setTimeout(()=>{if(dn&&mv<12)petIt()},650)};
+bot.onpointermove=e=>{if(!dn)return;mv+=Math.hypot(e.clientX-lx0,e.clientY-ly0);lx0=e.clientX;ly0=e.clientY;if(mv>260){mv=0;petIt()}};
+bot.onpointerup=bot.onpointercancel=()=>{clearTimeout(pt);if(dn&&mv<12&&!petted)poke();dn=0};
+function trick(id){if(S.sleeping)return toast(t("asleep"));if(S.energy<4)return err(t("low"));S.energy=cl(S.energy-4);S.mood=cl(S.mood+4);
+ bot.dataset.t=id;clearTimeout(trT);trT=setTimeout(()=>delete bot.dataset.t,2800);react("trick","happy",2800);fx("✦",5);
+ if(id==="binary")jingle([440,0,440,440,0,880,440,880]);else if(id==="dance")jingle([392,523,659,523,392,523,659,784]);
+ save();stats()}
+function auto(){const r=Math.random();
+ if(S.full<35&&r<.5){react("hungry","curious",2000);bot.classList.add("growl");setTimeout(()=>bot.classList.remove("growl"),1200)}
+ else if(r<.3){look(innerWidth*Math.random(),innerHeight*Math.random());setTimeout(()=>look(innerWidth/2,innerHeight*.4),1400)}
+ else if(r<.55){bot.dataset.t="stroll";clearTimeout(trT);trT=setTimeout(()=>delete bot.dataset.t,3400);say(line("idle"))}
+ else if(r<.8){bot.dataset.t="wave";clearTimeout(trT);trT=setTimeout(()=>delete bot.dataset.t,1800);say(line("idle"))}
+ else react("idle","curious",1800)}
+function learnUI(v){v.onclick=null;v.innerHTML=`<p class="empty">${t("pick")}</p><div id="les" class="grid"></div><div id="lq"></div>`;const g=$("les");
+ LES.forEach(l=>{const b=document.createElement("button");b.className="card";b.textContent=(S.learned.includes(l.id)?"✓ ":"◇ ")+lx(l)[0];b.onclick=()=>openLesson(l);g.appendChild(b)})}
+function openLesson(l){const [ti,tx,q,o,a]=lx(l),box=$("lq");box.innerHTML="";
+ const mk=(tag,txt,c)=>{const d=document.createElement(tag);d.textContent=txt;if(c)d.className=c;box.appendChild(d);return d};
+ mk("h3",ti);mk("p",tx,"ltx");mk("p",q).style.fontWeight="700";const fb=document.createElement("div");fb.className="hint";
+ o.forEach((x,i)=>{mk("button",x,"opt").onclick=()=>answer(l,i===a,fb)});box.appendChild(fb);react("learn","curious",2000)}
+function answer(l,ok,fb){const done=S.learned.includes(l.id);fb.className="hint";
+ if(S.sleeping){fb.textContent=t("asleep");return}
+ if(!done){if(S.energy<6||S.focus<8){fb.textContent=t("low");return err(t("low"))}S.energy=cl(S.energy-6);S.focus=cl(S.focus-8)}
+ if(!ok){S.mood=cl(S.mood-1);fb.textContent=t("bad_l");react("bad","error",1500);save();stats();return}
+ if(done){fb.className="hint ok";fb.textContent=t("done");react("ok","happy",1500);return}
+ S.learned=[...S.learned,l.id];S.xp+=25;S.coins+=10;S.mood=cl(S.mood+5);const tr=TR.find(x=>x.u===l.id);
+ fb.className="hint ok";fb.textContent=fmt("newtrick",{n:t("tr_"+tr.id)});react("ok","celebrating",2800);confetti();fx("+25 XP",1,"#4de1ff");save();stats()}
+const fmt=(k,o={})=>t(k).replace(/\{(\w+)\}/g,(_,x)=>o[x]??"");
+const hs=x=>{let h=0;for(const c of x)h=(h*31+c.charCodeAt(0))|0;return String(h)};
+function lint(src,lg){const H=[],L=src.split("\n");
+ if(lg==="js"){try{new Function(src)}catch(e){if(e instanceof SyntaxError)H.push({k:"syntaxerr",m:e.message})}
+  L.forEach((s,i)=>{const n=i+1,c=s.replace(/(["'`]).*?\1/g,"");
+   if(/^\s*var\s/.test(s))H.push({k:"h_var",l:n});if(/[^=!<>]==[^=]/.test(c))H.push({k:"h_eq",l:n});
+   if(/console\.log/.test(s))H.push({k:"h_log",l:n});if(s.length>100)H.push({k:"h_long",l:n});
+   if(/catch\s*(\([^)]*\))?\s*\{\s*\}/.test(s))H.push({k:"h_empty",l:n})});
+  const seen=new Set();for(const m of src.matchAll(/\b(?:let|const|var)\s+([A-Za-z_$][\w$]*)/g)){const v=m[1];if(seen.has(v))continue;seen.add(v);
+   if((src.match(new RegExp("(?<![\\w$])"+v.replace(/\$/g,"\\$")+"(?![\\w$])","g"))||[]).length<2)H.push({k:"h_unused",m:v})}
+ }else{
+  L.forEach((s,i)=>{const n=i+1,c=s.replace(/#.*$/,"").trimEnd();
+   if(/^\s*(if|elif|else|for|while|def|class|try|except|finally|with)\b/.test(c)&&!c.endsWith(":"))H.push({k:"h_colon",l:n});
+   if(/==\s*None/.test(s))H.push({k:"h_none",l:n});if(/^\s*print\s+[^(\s=]/.test(s))H.push({k:"h_print",l:n});if(s.length>100)H.push({k:"h_long",l:n})});
+  if(/^\t/m.test(src)&&/^ +\S/m.test(src))H.push({k:"h_tab"})}
+ if(L.length>5&&!/(\/\/|\/\*|#)/.test(src))H.push({k:"h_nocom"});return H}
+function labUI(v){v.onclick=null;
+ v.innerHTML=`<label>${t("codelang")} <select id="cl"><option value="js">JavaScript</option><option value="py">Python</option></select></label><textarea id="code" spellcheck="false" maxlength="5000" placeholder="${t("codeph")}"></textarea><div class="row"><button id="ck">${t("check")}</button></div><div id="hl"></div><p class="empty">${t("lnote")}</p>`;
+ const c=$("code");c.value=S.code||"";$("cl").value=S.lg||"js";let tt;
+ c.oninput=()=>{S.code=c.value;save();if(!S.sleeping){setState("coding");clearTimeout(tt);tt=setTimeout(()=>setState(base()),1500)}};
+ $("cl").onchange=e=>{S.lg=e.target.value;save()};
+ $("ck").onclick=()=>{const src=c.value,lg=$("cl").value;if(S.sleeping)return toast(t("asleep"));
+  if(!src.trim())return err(t("nohints"));if(src.trim().split("\n").length<3)return err(t("short"));
+  setState("debugging");const box=$("hl");box.innerHTML="";const H=lint(src,lg);
+  setTimeout(()=>{
+   if(!H.length){const k=hs(src+lg),fresh=!S.ok.includes(k);let m;
+    if(fresh){S.ok=[...S.ok,k].slice(-100);S.coins+=8;S.xp+=10;S.quality=cl(S.quality+8);m=fmt("clean",{n:8})}else m=t("cleanold");
+    const d=document.createElement("div");d.className="hint ok";d.textContent=m;box.appendChild(d);say(m);setState("celebrating",2500)}
+   else{H.forEach(h=>{const d=document.createElement("div");d.className="hint";d.textContent=fmt(h.k,h);box.appendChild(d)});
+    const m=fmt("found",{n:H.length});say(m);setState("curious",2500)}
+   save();stats()},700)}}
 /* chat */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
 function chatUI(v){v.onclick=null;
- v.innerHTML=`<div id="log"></div><div class="row"><input id="inp" placeholder="${t("ph")}" maxlength="500"><button id="snd">${t("send")}</button><button id="mic">🎤</button></div><p class="empty">${t("hint")}</p><label><input type="checkbox" id="sp" ${S.speak?"checked":""}> ${t("speak")}</label>`;
+ v.innerHTML=`<div id="log"></div><div class="row"><input id="inp" placeholder="${t("ph")}" maxlength="500"><button id="snd">${t("send")}</button><button id="mic">Mic</button></div><p class="empty">${t("hint")}</p><label><input type="checkbox" id="sp" ${S.speak?"checked":""}> ${t("speak")}</label>`;
  const lg=$("log");S.chat.forEach(m=>addMsg(m.r,m.x,false));
  const go=()=>{const x=$("inp").value.trim();if(!x)return;$("inp").value="";S.chat.push({r:"u",x});addMsg("u",x);setState("thinking");
   setTimeout(()=>{const r=/^status$/i.test(x)?t("offline")+t("stat_reply").replace("{e}",Math.round(S.energy)).replace("{b}",Math.round(S.battery)).replace("{c}",S.coins):t("nobackend");
@@ -150,9 +293,9 @@ function chatUI(v){v.onclick=null;
  $("snd").onclick=go;$("inp").onkeydown=e=>{if(e.key==="Enter")go()};$("sp").onchange=e=>{S.speak=e.target.checked;if(!S.speak&&window.speechSynthesis)speechSynthesis.cancel();save()};
  $("mic").onclick=()=>{if(rec){rec.stop();return}if(!SR)return err(t("nomic"));
   rec=new SR();rec.lang={tg:"tg-TJ",ru:"ru-RU",en:"en-US"}[S.lang];rec.interimResults=true;
-  rec.onstart=()=>{setState("listening");$("mic").textContent="⏹"};
+  rec.onstart=()=>{setState("listening");$("mic").textContent="Stop"};
   rec.onresult=e=>{$("inp").value=[...e.results].map(r=>r[0].transcript).join("")};
-  rec.onerror=()=>err(t("nomic"));rec.onend=()=>{rec=null;if($("mic"))$("mic").textContent="🎤";if($("bot").dataset.s==="listening")setState(base())};
+  rec.onerror=()=>err(t("nomic"));rec.onend=()=>{rec=null;if($("mic"))$("mic").textContent="Mic";if($("bot").dataset.s==="listening")setState(base())};
   try{rec.start()}catch(e){rec=null;err(t("nomic"))}}}
 function addMsg(r,x,sc=true){const d=document.createElement("div");d.className="m "+r;d.textContent=x;$("log").appendChild(d);$("log").scrollTop=1e9}
 /* game */
@@ -166,7 +309,7 @@ function gtxt(){if(!$("gst"))return;$("gst").textContent=!G.on?(G.end?t("restart
 function gstart(){Object.assign(G,{on:true,p:false,it:[],sc:0,li:3,t:0,sp:0,end:""});$("gm").textContent="";loop();gtxt()}
 function gpause(force){if(!G.on)return;if(force)G.p=true;else G.p=!G.p;if(!G.p)loop();else cancelAnimationFrame(G.raf);gtxt()}
 function gend(win){G.on=false;cancelAnimationFrame(G.raf);const n=win?G.sc+10:Math.floor(G.sc/2);S.coins+=n;S.mood=cl(S.mood+(win?10:-2));if(G.sc>S.best)S.best=G.sc;
- G.end=t(win?"win":"lose").replace("{n}",n);save();setState(win?"celebrating":"idle",3000);stats();if($("gm")){$("gm").textContent=G.end;gtxt();draw()}}
+ G.end=t(win?"win":"lose").replace("{n}",n);say(line(win?"win":"lose"));save();setState(win?"celebrating":"idle",3000);stats();if($("gm")){$("gm").textContent=G.end;gtxt();draw()}}
 function loop(){if(!G.on||G.p||tab!=="game")return;G.raf=requestAnimationFrame(loop);
  if(G.keys.l)G.x-=5;if(G.keys.r)G.x+=5;G.x=Math.max(30,Math.min(290,G.x));
  const spd=2+G.sc*.12,gap=Math.max(25,45-G.sc);if(++G.t%gap===0)G.it.push({x:20+Math.random()*280,y:-10,bad:Math.random()<.3});
@@ -187,18 +330,23 @@ function shopUI(v){v.innerHTML=`<p><b>${t("coins")}: ${S.coins}</b></p><div clas
   if(u){S.theme=u.dataset.u;save();return render()}
   if(!b)return;const i=SHOP.find(x=>x.id===b.dataset.b);if(S.coins<i.p)return err(t("low"));
   S.coins-=i.p;if(i.k==="inv")S.inv[i.id]++;else if(i.k==="theme"){S.themes.push("violet");S.theme="violet"}else S.acc=true;
-  save();toast(t("bought"));render()}}
+  save();toast(t("bought"));react("buy","happy",1500);fx("◆",3);render()}}
 /* data */
 function dataUI(v){v.onclick=null;v.innerHTML=`<p class="empty">${t("dnote")}</p><div class="row"><button id="ex">${t("export")}</button><button id="cr">${t("clear")}</button></div><textarea id="tx" readonly hidden></textarea>`;
  $("ex").onclick=()=>{const x=$("tx");x.hidden=false;x.value=JSON.stringify(S,null,2);x.select()};
- $("cr").onclick=()=>{if(confirm(t("confirm"))){const l=S.lang;try{localStorage.removeItem(KEY)}catch(e){}S={...D,inv:{...D.inv},themes:["cyan"],chat:[],lang:l};toast(t("cleared"));render()}}}
+ $("cr").onclick=()=>{if(confirm(t("confirm"))){const l=S.lang;try{localStorage.removeItem(KEY)}catch(e){}S={...D,inv:{...D.inv},themes:["cyan"],chat:[],ok:[],learned:[],lang:l};toast(t("cleared"));render()}}}
 /* life loop: exactly one timer */
 function life(){if(tick)clearInterval(tick);tick=setInterval(()=>{
- if(S.sleeping){S.energy=cl(S.energy+CFG.sleepGain);if(S.energy>=100){S.sleeping=false;setState("happy",2000)}}
- else{S.energy=cl(S.energy-CFG.drain);S.battery=cl(S.battery-CFG.bat);S.focus=cl(S.focus-.2);if(S.energy<20)S.mood=cl(S.mood-.5)}
- if(S.battery<=0&&!S.sleeping){S.sleeping=true;setState("sleeping")}
- if(!tm&&!["listening","speaking","thinking"].includes($("bot").dataset.s))setState(base());
- save();stats()},CFG.tick)}
+ idle++;
+ if(++n5>=5){n5=0;
+  if(S.sleeping){S.energy=cl(S.energy+CFG.sleepGain);if(S.energy>=100){S.sleeping=false;react("wake","happy",2000)}}
+  else{S.energy=cl(S.energy-CFG.drain);S.battery=cl(S.battery-CFG.bat);S.focus=cl(S.focus-.2);S.full=cl(S.full-.35);if(S.energy<20||S.full<15)S.mood=cl(S.mood-.5)}
+  if(S.battery<=0&&!S.sleeping){S.sleeping=true;setState("sleeping")}
+  save();stats()}
+ if(!S.sleeping&&!tm&&!dn&&!bot.dataset.t&&["idle","tired"].includes(bot.dataset.s)){
+  if(bot.dataset.s!==base())setState(base());
+  if(idle>=nx){idle=0;nx=7+Math.floor(Math.random()*8);auto()}}
+ },1000)}
 $("lang").onchange=e=>{S.lang=e.target.value;save();render()};
-setState(base());render();life();
+setState(base());render();life();setTimeout(()=>react("greet","curious",2500),700);
 </script></body></html>
